@@ -1,0 +1,101 @@
+package com.example.easystock.models;
+
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
+import java.io.Serializable;
+
+@Entity
+public class User implements Serializable {
+
+
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+    private String name;
+    private String lastName;
+    private String password;
+    private String phone;
+    private String role;
+    private String isLogged;
+    private boolean sync;
+
+    @Ignore
+    public User(int id, String name, String lastName, String password, String phone, String role) {
+        this.id = id;
+        this.name = name;
+        this.lastName = lastName;
+        this.password = password;
+        this.phone = phone;
+        this.role = role;
+        this.isLogged = "FALSE";
+        this.sync = false;
+    }
+
+    public User() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getIsLogged() {
+        return isLogged;
+    }
+
+    public void setIsLogged(String isLogged) {
+        this.isLogged = isLogged;
+    }
+
+    public boolean isSync() {
+        return sync;
+    }
+
+    public void setSync(boolean sync) {
+        this.sync = sync;
+    }
+}
