@@ -163,7 +163,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(v -> {
             if (TextUtils.equals(userPassword, mPassword.getText().toString())) {
                 mUser.setFingerprint(fingerPrintCheck.isChecked() ? "YES" : "NO");
-                mUser.setIsLogged(true);
+                mUser.setLogged(true);
                 mUserViewModel.updateUsersLogged(mUser);
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 intent.putExtra("ROLE", mUser.getRole());
@@ -222,7 +222,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (user != null) {
                             fingerprintControl = true;
                             mUser.setFingerprint(fingerPrintCheck.isActivated() ? "YES" : "NO");
-                            mUser.setIsLogged(true);
+                            mUser.setLogged(true);
                             mUserViewModel.updateUsersLogged(mUser);
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             intent.putExtra("ROLE", mUser.getRole());

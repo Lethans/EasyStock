@@ -39,10 +39,13 @@ public class UserActivity extends AppCompatActivity implements UsersFragment.Not
         Bundle bundle = new Bundle();
         if (intent.getExtras().getString(USERS) != null) {
             frameContainer = UsersFragment.newInstance();
+
         } else if (intent.getExtras().getString(USER_PROFILE) != null) {
+
             frameContainer = UserProfileFragment.newInstance();
             User user = (User) intent.getExtras().getSerializable(USER_TO_UPDATE);
             bundle.putSerializable(UserProfileFragment.USER, user);
+
         }
         loadFragment(frameContainer, bundle);
 
