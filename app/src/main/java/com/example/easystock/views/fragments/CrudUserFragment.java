@@ -1,6 +1,5 @@
 package com.example.easystock.views.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -9,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -18,7 +16,6 @@ import com.example.easystock.R;
 import com.example.easystock.controllers.viewModel.UserViewModel;
 import com.example.easystock.models.User;
 import com.example.easystock.utils.Constants;
-import com.example.easystock.utils.Helper;
 
 public class CrudUserFragment extends Fragment {
 
@@ -30,8 +27,6 @@ public class CrudUserFragment extends Fragment {
     private SwitchCompat rolSwitch;
     private Button btnAcept, btnCancel;
     private User mUser;
-    private String rol;
-    private NotificableNewUserFragment mListener;
 
 
     public static CrudUserFragment newInstance() {
@@ -42,7 +37,7 @@ public class CrudUserFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_user, container, false);
+        View view = inflater.inflate(R.layout.fragment_new_user, container, false);
 
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
@@ -59,28 +54,22 @@ public class CrudUserFragment extends Fragment {
 
 
         btnCancel.setOnClickListener(v -> {
-            mListener.onRemoveFragment();
         });
 
 
         btnAcept.setOnClickListener(v -> {
             if (validation()) {
                 if (TextUtils.equals(btnAcept.getText().toString().toUpperCase(), "AGREGAR")) {
-                    mUser = new User();
-                    mUser.setName(getEditextValue(editName));
-                    mUser.setLastName(getEditextValue(editLastName));
-                    mUser.setPassword(getEditextValue(editPassword));
-                    mUser.setRole(rol);
+                    mUser = new User(getEditextValue(editName), getEditextValue(editLastName), getEditextValue(editPassword),
+                            getEditextValue(editPhone), rolSwitch.isChecked() ? "9" : "1");
                     userViewModel.insertUser(mUser);
-                    mListener.onRemoveFragment();
                 } else if (TextUtils.equals(btnAcept.getText().toString().toUpperCase(), "MODIFICAR")) {
                     mUser.setName(getEditextValue(editName));
                     mUser.setLastName(getEditextValue(editLastName));
                     mUser.setPassword(getEditextValue(editPassword));
                     mUser.setPhone(getEditextValue(editPhone));
-                    mUser.setRole(rol);
+                    mUser.setRole(rolSwitch.isChecked() ? "9" : "1");
                     userViewModel.updateUser(mUser);
-                    mListener.onRemoveFragment();
                 }
             }
         });
@@ -97,9 +86,9 @@ public class CrudUserFragment extends Fragment {
         btnAcept = layout.findViewById(R.id.btnAceptUser);
         btnCancel = layout.findViewById(R.id.btnCancelUser);
 
-        rolSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+/*        rolSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             rol = isChecked ? "9" : "1";
-        });
+        });*/
 
     }
 
@@ -163,14 +152,5 @@ public class CrudUserFragment extends Fragment {
         return editText.getText().toString().trim();
     }
 
-    public interface NotificableNewUserFragment {
-        void onRemoveFragment();
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        mListener = (NotificableNewUserFragment) context;
-    }
 
 }

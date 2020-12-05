@@ -14,7 +14,7 @@ public class Product implements Serializable {
     private int id;
     private String stock;
     private String type;
-    private String originalPrice;
+    private String costPrice;
     private String price;
     private String color;
     private String material;
@@ -36,7 +36,7 @@ public class Product implements Serializable {
         this.color = generalColor;
         this.specificColor = specificColor;
         this.colorDescription = colorDescription;
-        this.originalPrice = costPrice;
+        this.costPrice = costPrice;
         this.price = price;
         this.priceList = priceList;
         this.size = size;
@@ -74,12 +74,12 @@ public class Product implements Serializable {
         this.type = type;
     }
 
-    public String getOriginalPrice() {
-        return originalPrice;
+    public String getCostPrice() {
+        return costPrice;
     }
 
-    public void setOriginalPrice(String originalPrice) {
-        this.originalPrice = originalPrice;
+    public void setCostPrice(String costPrice) {
+        this.costPrice = costPrice;
     }
 
     public String getPrice() {

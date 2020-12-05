@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -18,7 +19,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
@@ -40,13 +40,12 @@ public class StockActivity extends AppCompatActivity {
     public final static int PICK_PHOTO_CODE = 102;
     public final static String PRODUCT_UPDATE = "PRODUCT_UPDATE";
     private String mCurrentPhotoPath = null;
-    private Fragment frameNewProduct;
-    private Button btnNewProduct;
     private ProductViewModel mProductViewModel;
     private EditText editStock, editType, editMaterial, editcolorCode, editSpecificColor, editColorDescription,
-            editCostPrice, editPrice, editPriceOne, editPriceTwo, editPriceThree, editSize, editProductCode,
+            editCostPrice, editPrice, editPriceOne, editPriceTwo, editPriceThree, editProductCode,
             editDescription, editSuplierBill;
     private Button btnPhoto, btnGallery, btnCancel, btnAcept;
+    private CheckBox xsCheck, sCheck, mCheck, lCheck, xlCheck, xxlCheck, xxxlCheck, unicCheck, chkDeleteFields;
     private ImageView productImage;
     private Product mProduct;
 
@@ -57,6 +56,7 @@ public class StockActivity extends AppCompatActivity {
         mProductViewModel = new ViewModelProvider(this).get(ProductViewModel.class);
 
         init();
+        setCheckboxListeners();
         Intent intent = getIntent();
         if (intent.getExtras() != null) {
             mProduct = (Product) intent.getExtras().getSerializable(PRODUCT_UPDATE);
@@ -80,7 +80,7 @@ public class StockActivity extends AppCompatActivity {
                 //Guardo producto.
                 Product product = new Product(getEditextValue(editType), getEditextValue(editMaterial), getEditextValue(editStock),
                         getEditextValue(editcolorCode), getEditextValue(editSpecificColor), getEditextValue(editColorDescription),
-                        getEditextValue(editCostPrice), getEditextValue(editPrice), priceList, getEditextValue(editSize), getEditextValue(editProductCode),
+                        getEditextValue(editCostPrice), getEditextValue(editPrice), priceList, getProductSize(), getEditextValue(editProductCode),
                         getEditextValue(editDescription), getEditextValue(editSuplierBill), mCurrentPhotoPath);
 
                 mProductViewModel.insertProduct(product);
@@ -92,10 +92,10 @@ public class StockActivity extends AppCompatActivity {
                 mProduct.setColor(getEditextValue(editcolorCode));
                 mProduct.setSpecificColor(getEditextValue(editSpecificColor));
                 mProduct.setColorDescription(getEditextValue(editColorDescription));
-                mProduct.setOriginalPrice(getEditextValue(editCostPrice));
+                mProduct.setCostPrice(getEditextValue(editCostPrice));
                 mProduct.setPrice(getEditextValue(editPrice));
                 mProduct.setPriceList(priceList);
-                mProduct.setSize(getEditextValue(editSize));
+                mProduct.setSize(getProductSize());
                 mProduct.setCode(getEditextValue(editProductCode));
                 mProduct.setDescription(getEditextValue(editDescription));
                 mProduct.setSupplierBill(getEditextValue(editSuplierBill));
@@ -103,7 +103,8 @@ public class StockActivity extends AppCompatActivity {
                 mProductViewModel.updateProduct(mProduct);
                 Toast.makeText(this, "Producto actualizado con exito", Toast.LENGTH_SHORT).show();
             }
-            resetValues();
+            if (chkDeleteFields.isChecked())
+                resetValues();
         });
 
     }
@@ -120,12 +121,22 @@ public class StockActivity extends AppCompatActivity {
         editPriceOne = findViewById(R.id.productPriceOne);
         editPriceTwo = findViewById(R.id.productPriceTwo);
         editPriceThree = findViewById(R.id.productPriceThree);
-        editSize = findViewById(R.id.productSize);
+
+        xsCheck = findViewById(R.id.xsSize);
+        sCheck = findViewById(R.id.sSize);
+        mCheck = findViewById(R.id.mSize);
+        lCheck = findViewById(R.id.lSize);
+        xlCheck = findViewById(R.id.xlSize);
+        xxlCheck = findViewById(R.id.xxlSize);
+        xxxlCheck = findViewById(R.id.xxxlSize);
+        unicCheck = findViewById(R.id.unicSize);
+
+
         editProductCode = findViewById(R.id.productCode);
         editDescription = findViewById(R.id.productDescription);
         editSuplierBill = findViewById(R.id.productSupplierBill);
 
-
+        chkDeleteFields = findViewById(R.id.deletAllFields);
         btnPhoto = findViewById(R.id.btnTakePhoto);
         btnGallery = findViewById(R.id.btnRequestGallery);
         btnCancel = findViewById(R.id.btnCancelProduct);
@@ -142,12 +153,12 @@ public class StockActivity extends AppCompatActivity {
         editcolorCode.setText(product.getColor());
         editSpecificColor.setText(product.getSpecificColor());
         editColorDescription.setText(product.getColorDescription());
-        editCostPrice.setText(product.getOriginalPrice());
+        editCostPrice.setText(product.getCostPrice());
         editPrice.setText(product.getPrice());
         editPriceOne.setText(product.getPriceList().get(0));
         editPriceTwo.setText(product.getPriceList().get(1));
         editPriceThree.setText(product.getPriceList().get(2));
-        editSize.setText(product.getSize());
+        setProductSize(product.getSize());
         editProductCode.setText(product.getCode());
         editDescription.setText(product.getDescription());
         editSuplierBill.setText(product.getSupplierBill());
@@ -274,16 +285,98 @@ public class StockActivity extends AppCompatActivity {
         editPriceOne.setText("");
         editPriceTwo.setText("");
         editPriceThree.setText("");
-        editSize.setText("");
+        uncheckAllBox();
         editProductCode.setText("");
         editDescription.setText("");
         editSuplierBill.setText("");
-        //productImage.setBackgroundResource(R.drawable.stock_icon);
-        //productImage.setImageResource(android.R.color.transparent);
         productImage.setImageResource(R.drawable.stock_icon);
     }
 
+    private void uncheckAllBox() {
+        xsCheck.setChecked(false);
+        sCheck.setChecked(false);
+        mCheck.setChecked(false);
+        lCheck.setChecked(false);
+        xlCheck.setChecked(false);
+        xxlCheck.setChecked(false);
+        xxxlCheck.setChecked(false);
+        unicCheck.setChecked(false);
+    }
 
+    private String getProductSize() {
+        if (xsCheck.isChecked())
+            return "XS";
+        if (sCheck.isChecked())
+            return "S";
+        if (mCheck.isChecked())
+            return "M";
+        if (lCheck.isChecked())
+            return "L";
+        if (xlCheck.isChecked())
+            return "XL";
+        if (xxlCheck.isChecked())
+            return "XXL";
+        if (xxxlCheck.isChecked())
+            return "XXXL";
+        if (unicCheck.isChecked())
+            return "UNIC";
+
+        return "";
+    }
+
+    private void setProductSize(String size) {
+        if (size.toUpperCase().equals("XS"))
+            xsCheck.setChecked(true);
+        if (size.toUpperCase().equals("S"))
+            sCheck.setChecked(true);
+        if (size.toUpperCase().equals("M"))
+            mCheck.setChecked(true);
+        if (size.toUpperCase().equals("L"))
+            lCheck.setChecked(true);
+        if (size.toUpperCase().equals("XL"))
+            xlCheck.setChecked(true);
+        if (size.toUpperCase().equals("XXL"))
+            xxlCheck.setChecked(true);
+        if (size.toUpperCase().equals("XXXL"))
+            xxxlCheck.setChecked(true);
+        if (size.toUpperCase().equals("UNIC"))
+            unicCheck.setChecked(true);
+    }
+
+    private void setCheckboxListeners() {
+        xsCheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            uncheckAllBox();
+            xsCheck.setChecked(isChecked);
+        });
+        sCheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            uncheckAllBox();
+            sCheck.setChecked(isChecked);
+        });
+        mCheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            uncheckAllBox();
+            mCheck.setChecked(isChecked);
+        });
+        lCheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            uncheckAllBox();
+            lCheck.setChecked(isChecked);
+        });
+        xlCheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            uncheckAllBox();
+            xlCheck.setChecked(isChecked);
+        });
+        xxlCheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            uncheckAllBox();
+            xxlCheck.setChecked(isChecked);
+        });
+        xxxlCheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            uncheckAllBox();
+            xxxlCheck.setChecked(isChecked);
+        });
+        unicCheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            uncheckAllBox();
+            unicCheck.setChecked(isChecked);
+        });
+    }
 }
 
 

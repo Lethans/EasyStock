@@ -19,6 +19,31 @@ public interface ProductDao {
     @Query("SELECT * FROM Product")
     LiveData<List<Product>> getAllProducts();
 
+    /*Query filtros*/
+
+    @Query("SELECT * FROM Product ORDER BY price ASC")
+    LiveData<List<Product>> getAscPriceFilter();
+
+    @Query("SELECT * FROM Product ORDER BY price DESC")
+    LiveData<List<Product>> getDescPriceFilter();
+
+    @Query("SELECT * FROM Product ORDER BY stock ASC")
+    LiveData<List<Product>> getAscStockFilter();
+
+    @Query("SELECT * FROM Product ORDER BY stock DESC")
+    LiveData<List<Product>> getDescStockFilter();
+
+    @Query("SELECT * FROM Product ORDER BY size ASC")
+    LiveData<List<Product>> getAscSizeFilter();
+
+    @Query("SELECT * FROM Product ORDER BY size DESC")
+    LiveData<List<Product>> getDescSizeFilter();
+
+    /*Fin query filtros*/
+
+    @Query("SELECT * FROM Product WHERE material LIKE '%'||:material||'%' AND type LIKE '%'||:type||'%' AND id NOT IN (SELECT id FROM Product WHERE id = :id)")
+    List<Product> getSimilarbyTypeMaterial(String type, String material, int id);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertProduct(Product product);
 

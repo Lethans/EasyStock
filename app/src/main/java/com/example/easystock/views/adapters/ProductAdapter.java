@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,10 +19,11 @@ import com.example.easystock.models.Product;
 
 import java.util.List;
 
-public class ProductAdapter extends RecyclerView.Adapter {
+public class ProductAdapter extends RecyclerView.Adapter implements Filterable {
 
     private Context mContext;
     private List<Product> productList;
+    private ProductFilter productFilter;
     private NotificableDelClickRecycler listener;
 
     public ProductAdapter(Context context, NotificableDelClickRecycler notificableDelClickRecycler) {
@@ -44,6 +47,14 @@ public class ProductAdapter extends RecyclerView.Adapter {
         Product product = productList.get(position);
         ProductAdapter.ViewHolderProducts viewHolderProducts = (ProductAdapter.ViewHolderProducts) holder;
         viewHolderProducts.loadProduct(product);
+    }
+
+    @Override
+    public Filter getFilter() {
+        if (productFilter == null) {
+            productFilter = new ProductFilter(this, productList);
+        }
+        return productFilter;
     }
 
     @Override
@@ -79,7 +90,7 @@ public class ProductAdapter extends RecyclerView.Adapter {
             buttonUpdate = itemView.findViewById(R.id.productUpdate);
             buttonDelete = itemView.findViewById(R.id.productDelete);
 
-            //itemView.setOnClickListener(view -> listener.notificaClick(userList.get(getAdapterPosition())));
+            itemView.setOnClickListener(view -> listener.showProduct(productList.get(getBindingAdapterPosition())));
             buttonUpdate.setOnClickListener(view -> listener.notificaUpdate(productList.get(getBindingAdapterPosition())));
             buttonDelete.setOnClickListener(view -> listener.notificaDelete(productList.get(getBindingAdapterPosition())));
 
@@ -98,6 +109,8 @@ public class ProductAdapter extends RecyclerView.Adapter {
     }
 
     public interface NotificableDelClickRecycler {
+        void showProduct(Product product);
+
         void notificaUpdate(Product product);
 
         void notificaDelete(Product product);

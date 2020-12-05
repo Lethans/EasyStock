@@ -3,12 +3,18 @@ package com.example.easystock.views.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.easystock.R;
+import com.example.easystock.controllers.viewModel.UserViewModel;
+import com.example.easystock.models.User;
 import com.example.easystock.utils.Constants;
 
 public class MainActivity extends AppCompatActivity {
@@ -17,24 +23,38 @@ public class MainActivity extends AppCompatActivity {
     private CardView btnTwo;
     private CardView btnThird;
     private CardView btnFour;
+    private CardView btnFifth;
     private String role;
+    private UserViewModel mUserViewModel;
+    private User mUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mUserViewModel = new ViewModelProvider(MainActivity.this).get(UserViewModel.class);
 
         Intent intent = getIntent();
         role = intent.getStringExtra("ROLE");
-
         init();
+
+        TextView text = findViewById(R.id.textUser);
+        mUserViewModel.getUserLogged().observe(this, user -> {
+            text.setText(user.getName());
+            mUser = user;
+        });
+
         btnUser.setOnClickListener(v -> {
             if (TextUtils.equals(role, Constants.ADMIN_ROLE)) {
-                Intent intent1 = new Intent(MainActivity.this, UsersActivity.class);
+                Intent intent1 = new Intent(MainActivity.this, UserActivity.class);
+                intent1.putExtra(UserActivity.USERS, "ALL_USERS");
                 startActivity(intent1);
             } else {
-                Toast.makeText(MainActivity.this, "Función habilitada para administradores", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Vendedor no", Toast.LENGTH_SHORT).show();
             }
+
+
         });
 
         btnTwo.setOnClickListener(v -> {
@@ -42,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent1 = new Intent(MainActivity.this, StockActivity.class);
                 startActivity(intent1);
             } else {
-                //Fixme aca si es vendedor tendria que llevarlo a un fragment para modificar su perfil
                 Toast.makeText(MainActivity.this, "Función habilitada para administradores", Toast.LENGTH_SHORT).show();
             }
         });
@@ -52,10 +71,17 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent1);
         });
 
-/*        btnFour.setOnClickListener(v -> {
-            Intent intent1 = new Intent(MainActivity.this, test.class);
+        btnFour.setOnClickListener(v -> {
+            Intent intent1 = new Intent(MainActivity.this, UserActivity.class);
+            intent1.putExtra(UserActivity.USER_PROFILE, "USER_PROFILE");
+            intent1.putExtra(UserActivity.USER_TO_UPDATE, mUser);
             startActivity(intent1);
-        });*/
+        });
+
+        btnFifth.setOnClickListener(v -> {
+            Intent intent1 = new Intent(MainActivity.this, CheckoutActivity.class);
+            startActivity(intent1);
+        });
     }
 
     private void init() {
@@ -63,5 +89,6 @@ public class MainActivity extends AppCompatActivity {
         btnTwo = findViewById(R.id.secondIcon);
         btnThird = findViewById(R.id.thirdIcon);
         btnFour = findViewById(R.id.fourIcon);
+        btnFifth = findViewById(R.id.fifthIcon);
     }
 }

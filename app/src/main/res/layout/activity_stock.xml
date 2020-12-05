@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#9F0975D3"
@@ -151,30 +150,6 @@
                 android:textSize="20sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/productCostPrice_text_input_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:counterTextAppearance="@android:color/holo_orange_dark"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/productDescriptionColor_text_input_layout">
-
-            <EditText
-                android:id="@+id/productCostPrice"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#00000000"
-                android:gravity="top|start"
-                android:hint="Precio costo"
-                android:inputType="number"
-                android:lines="1"
-                android:maxLines="1"
-                android:textSize="20sp" />
-        </com.google.android.material.textfield.TextInputLayout>
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/productPrice_text_input_layout"
             android:layout_width="match_parent"
@@ -183,7 +158,7 @@
             app:counterTextAppearance="@android:color/holo_orange_dark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/productCostPrice_text_input_layout">
+            app:layout_constraintTop_toBottomOf="@+id/productDescriptionColor_text_input_layout">
 
             <EditText
                 android:id="@+id/productPrice"
@@ -276,7 +251,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
-        <com.google.android.material.textfield.TextInputLayout
+        <!--<com.google.android.material.textfield.TextInputLayout
             android:id="@+id/productSize_text_input_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -296,7 +271,97 @@
                 android:lines="1"
                 android:maxLines="1"
                 android:textSize="20sp" />
-        </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>-->
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/sizeConstraint"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/productPriceOne_text_input_layout">
+
+            <CheckBox
+                android:id="@+id/xsSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="XS"
+                app:layout_constraintEnd_toStartOf="@+id/sSize"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <CheckBox
+                android:id="@+id/sSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="S"
+                app:layout_constraintEnd_toStartOf="@+id/mSize"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/xsSize"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <CheckBox
+                android:id="@+id/mSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="M"
+                app:layout_constraintEnd_toStartOf="@+id/lSize"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/sSize"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <CheckBox
+                android:id="@+id/lSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="L"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/mSize"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <CheckBox
+                android:id="@+id/xlSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="XL"
+                app:layout_constraintEnd_toEndOf="@+id/xsSize"
+                app:layout_constraintStart_toStartOf="@+id/xsSize"
+                app:layout_constraintTop_toBottomOf="@+id/xsSize" />
+
+            <CheckBox
+                android:id="@+id/xxlSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="XXL"
+                app:layout_constraintBottom_toBottomOf="@+id/xlSize"
+                app:layout_constraintStart_toStartOf="@+id/sSize"
+                app:layout_constraintTop_toTopOf="@+id/xlSize" />
+
+            <CheckBox
+                android:id="@+id/xxxlSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="XXXL"
+                app:layout_constraintBottom_toBottomOf="@+id/xlSize"
+                app:layout_constraintStart_toStartOf="@+id/mSize"
+                app:layout_constraintTop_toTopOf="@+id/xlSize" />
+
+            <CheckBox
+                android:id="@+id/unicSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Unico"
+                app:layout_constraintBottom_toBottomOf="@+id/xlSize"
+                app:layout_constraintStart_toStartOf="@+id/lSize"
+                app:layout_constraintTop_toTopOf="@+id/xlSize" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -307,7 +372,7 @@
             app:counterTextAppearance="@android:color/holo_orange_dark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/productSize_text_input_layout">
+            app:layout_constraintTop_toBottomOf="@+id/sizeConstraint">
 
             <EditText
                 android:id="@+id/productCode"
@@ -367,6 +432,29 @@
                 android:textSize="20sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/productCostPrice_text_input_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:counterTextAppearance="@android:color/holo_orange_dark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/productSupplierBill_text_input_layout">
+
+            <EditText
+                android:id="@+id/productCostPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:gravity="top|start"
+                android:hint="Precio costo"
+                android:inputType="number"
+                android:lines="1"
+                android:maxLines="1"
+                android:textSize="20sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <ImageView
             android:id="@+id/productImage"
@@ -376,7 +464,7 @@
             android:layout_marginTop="20dp"
             android:src="@drawable/stock_icon"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/productSupplierBill_text_input_layout" />
+            app:layout_constraintTop_toBottomOf="@+id/productCostPrice_text_input_layout" />
 
         <Button
             android:id="@+id/btnTakePhoto"
@@ -395,10 +483,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Galeria"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/productImage"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/productImage"
             app:layout_constraintTop_toBottomOf="@+id/btnTakePhoto" />
+
+        <CheckBox
+            android:id="@+id/deletAllFields"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:text="Borrar todos los campos al guardar"
+            app:layout_constraintBottom_toTopOf="@+id/btnCancelProduct"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
         <Button

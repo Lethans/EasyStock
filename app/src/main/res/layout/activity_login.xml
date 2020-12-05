@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/topGuideline"
         android:layout_width="match_parent"
@@ -66,15 +67,27 @@
         app:layout_constraintStart_toStartOf="@+id/spinnerCardView"
         app:layout_constraintTop_toBottomOf="@+id/spinnerCardView" />
 
-    <Button
-        android:id="@+id/btnFingerprint"
+    <CheckBox
+        android:id="@+id/fingerPrintCheck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="huella"
-        app:layout_constraintBottom_toTopOf="@+id/btnLogin"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp"
+        android:text="Mantener sesion con huella"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/passwordLogin"
+        app:layout_constraintStart_toStartOf="@+id/passwordLogin"
         app:layout_constraintTop_toBottomOf="@+id/passwordLogin" />
+
+    <ImageView
+        android:id="@+id/btnFingerprint"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/ic_baseline_fingerprint_24"
+        app:layout_constraintBottom_toBottomOf="@+id/btnLogin"
+        app:layout_constraintEnd_toEndOf="@+id/passwordLogin"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnLogin"
+        app:layout_constraintTop_toTopOf="@+id/btnLogin" />
 
     <Button
         android:id="@+id/btnLogin"
@@ -82,9 +95,10 @@
         android:layout_height="wrap_content"
         android:text="Ingresar"
         app:layout_constraintBottom_toTopOf="@+id/bottomGuideline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordLogin" />
+        app:layout_constraintEnd_toStartOf="@+id/btnFingerprint"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="@+id/passwordLogin" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

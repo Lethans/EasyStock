@@ -17,7 +17,8 @@
         android:roundIcon="@drawable/stock_icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.EasyStock">
-        <activity android:name=".views.activities.test" /> <!-- Agregar para fotos producto -->
+
+        <!-- Agregar para fotos producto -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
@@ -29,13 +30,22 @@
         </provider>
 
         <activity
+            android:name=".views.activities.CheckoutActivity"
+            android:label="@string/title_activity_checkout"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.EasyStock.NoActionBar" />
+        <activity
+            android:name=".views.activities.ShowProduct"
+            android:label="@string/title_activity_show_product"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".views.activities.ShowStock"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.activities.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".views.activities.UsersActivity"
+            android:name=".views.activities.UserActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.activities.StockActivity"

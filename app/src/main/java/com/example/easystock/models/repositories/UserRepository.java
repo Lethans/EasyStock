@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
+import com.example.easystock.listeners.GetUserFingerprintListener;
 import com.example.easystock.models.User;
 import com.example.easystock.models.dao.UserDao;
 import com.example.easystock.models.db.AppDatabase;
@@ -31,6 +32,10 @@ public class UserRepository {
         return mUserDao.getUserLogged();
     }
 
+    public LiveData<User> getUserFingerPrint() {
+        return mUserDao.getUserFingerPrint();
+    }
+
     public void insertUser(User user) {
         new insertAsyncTask(mUserDao).execute(user);
     }
@@ -48,7 +53,11 @@ public class UserRepository {
     }
 
     public void updateUsersLogged(User user, int idUserLogged) {
-        new UpdateUsersLoggedsyncTask(mUserDao, user, idUserLogged).execute();
+        new UpdateUsersLoggedAsyncTask(mUserDao, user, idUserLogged).execute();
+    }
+
+    public void getUserWithFingerprint(GetUserFingerprintListener listener) {
+        new SelectUsersFingerPrintAsyncTask(mUserDao, listener).execute();
     }
 
     private static class insertAsyncTask extends AsyncTask<User, Void, Void> {
@@ -81,7 +90,7 @@ public class UserRepository {
         }
     }
 
-    private class UpdateUserStatusAsyncTask extends AsyncTask<User, Void, Void> {
+    private static class UpdateUserStatusAsyncTask extends AsyncTask<User, Void, Void> {
 
         private UserDao mAsyncTaskDao;
 
@@ -111,13 +120,13 @@ public class UserRepository {
         }
     }
 
-    private static class UpdateUsersLoggedsyncTask extends AsyncTask<User, Void, Void> {
+    private static class UpdateUsersLoggedAsyncTask extends AsyncTask<User, Void, Void> {
 
         private UserDao mAsyncTaskDao;
         private User mUser;
         private int mUserLoggedId;
 
-        public UpdateUsersLoggedsyncTask(UserDao dao, User user, int userLoggedId) {
+        public UpdateUsersLoggedAsyncTask(UserDao dao, User user, int userLoggedId) {
             mAsyncTaskDao = dao;
             mUser = user;
             mUserLoggedId = userLoggedId;
@@ -127,6 +136,32 @@ public class UserRepository {
         protected Void doInBackground(User... voids) {
             mAsyncTaskDao.updateUsersLogged(mUser, mUserLoggedId);
             return null;
+        }
+    }
+
+    private static class SelectUsersFingerPrintAsyncTask extends AsyncTask<Void, Void, User> {
+
+        private UserDao mAsyncTaskDao;
+        private GetUserFingerprintListener mListener;
+
+        public SelectUsersFingerPrintAsyncTask(UserDao dao, GetUserFingerprintListener listener) {
+            mAsyncTaskDao = dao;
+            mListener = listener;
+        }
+
+        @Override
+        protected User doInBackground(Void... voids) {
+            return  mAsyncTaskDao.getUserWithFingerprint();
+            //return null;
+        }
+
+        @Override
+        protected void onPostExecute(User user) {
+            super.onPostExecute(user);
+            if (user != null)
+                mListener.onGetUser(user);
+            else
+                mListener.onNotGetUser("Ingrese su cuenta manual y vuelva a seleccionar Mantener sesión");
         }
     }
 

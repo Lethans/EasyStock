@@ -17,8 +17,9 @@ public class User implements Serializable {
     private String password;
     private String phone;
     private String role;
-    private String isLogged;
+    private boolean isLogged;
     private boolean sync;
+    private String fingerprint;
 
     @Ignore
     public User(int id, String name, String lastName, String password, String phone, String role) {
@@ -28,7 +29,19 @@ public class User implements Serializable {
         this.password = password;
         this.phone = phone;
         this.role = role;
-        this.isLogged = "FALSE";
+        this.isLogged = false;
+        this.fingerprint = "NO";
+        this.sync = false;
+    }
+
+    public User(String name,String lastName,String password, String phone, String role) {
+        this.name = name;
+        this.lastName = lastName;
+        this.password = password;
+        this.phone = phone;
+        this.role = role;
+        this.isLogged = false;
+        this.fingerprint = "NO";
         this.sync = false;
     }
 
@@ -83,11 +96,11 @@ public class User implements Serializable {
         this.role = role;
     }
 
-    public String getIsLogged() {
+    public boolean getIsLogged() {
         return isLogged;
     }
 
-    public void setIsLogged(String isLogged) {
+    public void setIsLogged(boolean isLogged) {
         this.isLogged = isLogged;
     }
 
@@ -97,5 +110,13 @@ public class User implements Serializable {
 
     public void setSync(boolean sync) {
         this.sync = sync;
+    }
+
+    public String getFingerprint() {
+        return fingerprint;
+    }
+
+    public void setFingerprint(String fingerprint) {
+        this.fingerprint = fingerprint;
     }
 }
