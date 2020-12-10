@@ -4,18 +4,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#8EBF54"
+    android:background="#03A9F4"
     tools:context=".views.activities.CheckoutActivity">
 
 
-    <FrameLayout
-        android:id="@+id/checkoutContainerDetails"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/middleGuideLine"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/cartShopRecycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/topGuideLine"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/middleGuideLine"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Medio de pago"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/middleGuideLine"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/checkoutTotalTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total"
+        app:layout_constraintBottom_toTopOf="@+id/topGuideLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/middleGuideLine" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/topGuideLine"
@@ -23,30 +48,6 @@
         android:layout_height="1dp"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.3" />
-
-    <!--    <androidx.cardview.widget.CardView
-            android:id="@+id/base_cardview"
-            style="@style/Base.CardView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_margin="5dp"
-            app:layout_constraintBottom_toTopOf="@+id/bottomGuideline"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/topGuideLine">-->
-
-    <!--        <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/parent_recyclerview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.111"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.467" />-->
-
-    <!--NonSwipeableViewPager-->
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/checkout_ViewPager"
@@ -60,28 +61,17 @@
 
     </androidx.viewpager.widget.ViewPager>
 
-<!--    <com.google.android.material.tabs.TabLayout
+    <com.google.android.material.tabs.TabLayout
         android:id="@+id/checkout_tab_layout"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkout_ViewPager" />-->
-
-    <!--        <androidx.viewpager.widget.ViewPager
-                android:id="@+id/checkout_ViewPager"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginBottom="2dp"
-                app:layout_constraintBottom_toTopOf="@+id/bottomGuideline"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/topGuideLine" />-->
-
-
-    <!--</androidx.cardview.widget.CardView>-->
-
+        app:layout_constraintTop_toTopOf="@+id/bottomGuideline"
+        app:tabBackground="@drawable/tab_selector"
+        app:tabGravity="center"
+        app:tabIndicatorHeight="0dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/bottomGuideline"
@@ -92,36 +82,3 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!--
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerItems"
-            android:layout_width="0dp"
-            android:layout_height="150dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    -->
-
-    <!-- This is the parent RecyclerView-->
-    <!--    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/parent_recyclerview"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />-->
-
-
-    <!--    <ExpandableListView
-            android:id="@+id/expandableListView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:divider="@android:color/darker_gray"
-            android:dividerHeight="0.5dp"
-            android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/base_cardview" />-->

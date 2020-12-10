@@ -1,4 +1,4 @@
-package com.example.easystock.utils;
+package com.example.easystock.utils.viewPagerEfects;
 
 import android.view.View;
 

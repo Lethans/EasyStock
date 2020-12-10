@@ -9,7 +9,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -28,7 +30,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.easystock.R;
 import com.example.easystock.controllers.viewModel.UserViewModel;
-import com.example.easystock.listeners.GetUserFingerprintListener;
 import com.example.easystock.models.User;
 import com.example.easystock.views.adapters.LoginAdapter;
 import com.karumi.dexter.Dexter;
@@ -66,6 +67,18 @@ public class LoginActivity extends AppCompatActivity {
         setObservers();
         setSpinner();
 
+        mPassword.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_GO) {
+                if (TextUtils.equals(userPassword, mPassword.getText().toString())) {
+                    login();
+                } else {
+                    mPassword.setText("");
+                    Toast.makeText(this, "Contraseña incorrecta", Toast.LENGTH_LONG).show();
+                }
+            }
+            return false;
+        });
+
         Dexter.withContext(this)
                 .withPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.USE_BIOMETRIC)
                 .withListener(new MultiplePermissionsListener() {
@@ -86,43 +99,6 @@ public class LoginActivity extends AppCompatActivity {
         if (BiometricManager.from(LoginActivity.this).canAuthenticate() == BIOMETRIC_SUCCESS) {
             fingerPrintCheck.setVisibility(View.VISIBLE);
         }
-        /*Executor newExecutor = Executors.newSingleThreadExecutor();
-
-        FragmentActivity activity = this;
-
-        final BiometricPrompt myBiometricPrompt = new BiometricPrompt(activity, newExecutor, new BiometricPrompt.AuthenticationCallback() {
-            @Override
-            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
-                super.onAuthenticationError(errorCode, errString);
-                if (errorCode == BiometricPrompt.ERROR_NEGATIVE_BUTTON) {
-                } else {
-                    Log.d("TAG", "An unrecoverable error occurred");
-                }
-            }
-
-            @Override
-            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
-                super.onAuthenticationSucceeded(result);
-                Log.d("TAG", "Fingerprint recognised successfully");
-            }
-
-            @Override
-            public void onAuthenticationFailed() {
-                super.onAuthenticationFailed();
-                Log.d("TAG", "Fingerprint not recognised");
-            }
-        });
-
-//Create the BiometricPrompt instance//
-        final BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                .setTitle("Title text goes here")
-                .setSubtitle("Subtitle goes here")
-                .setDescription("This is the description")
-                .setNegativeButtonText("Cancel")
-                .build();
-
-
-        myBiometricPrompt.authenticate(promptInfo);*/
 
         ImageView btnFingerprint = findViewById(R.id.btnFingerprint);
         btnFingerprint.setOnClickListener(v -> {
@@ -136,15 +112,15 @@ public class LoginActivity extends AppCompatActivity {
                 } else if (!fmc.hasEnrolledFingerprints()) {
                     Toast.makeText(this, "There are no fingerprints currently enrolled", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(this, "Fingerprint authentication is ready for testing", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this, "Fingerprint authentication is ready for testing", Toast.LENGTH_LONG).show();
 
                     //final BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder(this)
                     // Set up the authentication dialog
                     BiometricPrompt biometricPrompt = new BiometricPrompt
                             .Builder(this)
                             .setTitle("Biometric Authentication")
-                            .setSubtitle("Please authenticate to continue")
-                            .setDescription("Fingerprinting in biometric authentication API is being tested.")
+                            .setSubtitle("Por favor, autentifique para continuar")
+                            //.setDescription("Fingerprinting in biometric authentication API is being tested.")
                             .setNegativeButton("Cancel", this.getMainExecutor(),
                                     new DialogInterface.OnClickListener() {
                                         @Override
@@ -162,18 +138,10 @@ public class LoginActivity extends AppCompatActivity {
 
         btnLogin.setOnClickListener(v -> {
             if (TextUtils.equals(userPassword, mPassword.getText().toString())) {
-                mUser.setFingerprint(fingerPrintCheck.isChecked() ? "YES" : "NO");
-                mUser.setLogged(true);
-                mUserViewModel.updateUsersLogged(mUser);
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.putExtra("ROLE", mUser.getRole());
-                startActivity(intent);
+                login();
             } else {
                 mPassword.setText("");
                 Toast.makeText(this, "Contraseña incorrecta", Toast.LENGTH_LONG).show();
-                //Borrar esto luego
-
-                //Borrar esto luego
             }
         });
     }
@@ -200,56 +168,29 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
-                /*mUserViewModel.getUserWithFingerprint(new GetUserFingerprintListener() {
-                    @Override
-                    public void onGetUser(User user) {
-                        mUser.setFingerprint(fingerPrintCheck.isActivated() ? "YES" : "NO");
-                        mUser.setIsLogged(true);
-                        mUserViewModel.updateUsersLogged(mUser);
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.putExtra("ROLE", mUser.getRole());
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onNotGetUser(String msj) {
-                        Toast.makeText(LoginActivity.this, msj, Toast.LENGTH_SHORT).show();
-
-                    }
-                });*/
                 mUserViewModel.getUserFingerPrint().observe(LoginActivity.this, user -> {
                     if (!fingerprintControl) {
                         if (user != null) {
                             fingerprintControl = true;
-                            mUser.setFingerprint(fingerPrintCheck.isActivated() ? "YES" : "NO");
-                            mUser.setLogged(true);
-                            mUserViewModel.updateUsersLogged(mUser);
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            intent.putExtra("ROLE", mUser.getRole());
-                            startActivity(intent);
+                            login();
                         } else {
                             Toast.makeText(LoginActivity.this, "Ingrese su cuenta manual y vuelva a seleccionar Mantener sesión", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-
-                /*mUserViewModel.getUserWithFingerprint(user -> {
-                    if (user != null) {
-                        mUser.setFingerprint(fingerPrintCheck.isActivated() ? "YES" : "NO");
-                        mUser.setIsLogged(true);
-                        mUserViewModel.updateUsersLogged(mUser);
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.putExtra("ROLE", mUser.getRole());
-                        startActivity(intent);
-                    } else {
-                        Toast.makeText(LoginActivity.this, "Ingrese su cuenta manual y vuelva a seleccionar Mantener sesión", Toast.LENGTH_SHORT).show();
-                    }
-                });*/
-
-
                 super.onAuthenticationSucceeded(result);
             }
         };
+    }
+
+    private void login() {
+        mPassword.setText("");
+        mUser.setFingerprint(fingerPrintCheck.isChecked() ? "YES" : "NO");
+        mUser.setLogged(true);
+        mUserViewModel.updateUsersLogged(mUser);
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        intent.putExtra("ROLE", mUser.getRole());
+        startActivity(intent);
     }
 
     private CancellationSignal cancellationSignal;

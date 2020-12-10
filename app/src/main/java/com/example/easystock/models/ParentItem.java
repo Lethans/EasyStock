@@ -5,10 +5,10 @@ import java.util.List;
 public class ParentItem {
 
     private String mProductGeneralCode;
-    private List<ChildItem> ChildItemList;
+    private List<Product> ChildItemList;
 
 
-    public ParentItem(String ParentItemTitle, List<ChildItem> ChildItemList) {
+    public ParentItem(String ParentItemTitle, List<Product> ChildItemList) {
 
         this.mProductGeneralCode = ParentItemTitle;
         this.ChildItemList = ChildItemList;
@@ -23,11 +23,11 @@ public class ParentItem {
         mProductGeneralCode = parentItemTitle;
     }
 
-    public List<ChildItem> getChildItemList() {
+    public List<Product> getChildItemList() {
         return ChildItemList;
     }
 
-    public void setChildItemList(List<ChildItem> childItemList) {
+    public void setChildItemList(List<Product> childItemList) {
         ChildItemList = childItemList;
     }
 }

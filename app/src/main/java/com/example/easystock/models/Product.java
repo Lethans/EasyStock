@@ -18,7 +18,6 @@ public class Product implements Serializable {
     private String price;
     private String color;
     private String material;
-    private String specificColor;
     private String colorDescription;
     private String description;
     private String size;
@@ -28,13 +27,12 @@ public class Product implements Serializable {
     private List<String> priceList;
 
     @Ignore
-    public Product(String type, String material, String stock, String generalColor, String specificColor, String colorDescription, String costPrice, String price,
+    public Product(String type, String material, String stock, String generalColor, String colorDescription, String costPrice, String price,
                    List<String> priceList, String size, String productCode, String description, String supplierBill, String image) {
         this.type = type;
         this.material = material;
         this.stock = stock;
         this.color = generalColor;
-        this.specificColor = specificColor;
         this.colorDescription = colorDescription;
         this.costPrice = costPrice;
         this.price = price;
@@ -104,14 +102,6 @@ public class Product implements Serializable {
 
     public void setMaterial(String material) {
         this.material = material;
-    }
-
-    public String getSpecificColor() {
-        return specificColor;
-    }
-
-    public void setSpecificColor(String specificColor) {
-        this.specificColor = specificColor;
     }
 
     public String getColorDescription() {

@@ -12,18 +12,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.easystock.R;
-import com.example.easystock.models.ChildItem;
+import com.example.easystock.models.Product;
 
 import java.util.List;
 
 public class ChildItemAdapter extends RecyclerView.Adapter/*<ChildItemAdapter.ChildViewHolder>*/ {
 
-    private List<ChildItem> childItemList;
+    private List<Product> mChildsList;
     private Context mCtx;
     private ListenerChildItem listener;
 
-    public ChildItemAdapter(List<ChildItem> childItemList, Context context, ListenerChildItem listenerChildItem) {
-        this.childItemList = childItemList;
+    public ChildItemAdapter(List<Product> childItemList, Context context, ListenerChildItem listenerChildItem) {
+        this.mChildsList = childItemList;
         this.mCtx = context;
         this.listener = listenerChildItem;
     }
@@ -54,15 +54,15 @@ public class ChildItemAdapter extends RecyclerView.Adapter/*<ChildItemAdapter.Ch
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ChildItem childItem = childItemList.get(position);
+        Product product = mChildsList.get(position);
         ChildViewHolder viewHolderChild = (ChildViewHolder) holder;
-        viewHolderChild.setChildInfo(childItem);
+        viewHolderChild.setChildInfo(product);
         //childViewHolder.ChildItemTitle.setText(childItem.getChildItemTitle());
     }
 
     @Override
     public int getItemCount() {
-        return (childItemList == null) ? 0 : childItemList.size();
+        return (mChildsList == null) ? 0 : mChildsList.size();
     }
 
 
@@ -75,16 +75,16 @@ public class ChildItemAdapter extends RecyclerView.Adapter/*<ChildItemAdapter.Ch
             super(itemView);
             childItemTitle = itemView.findViewById(R.id.child_item_title);
             mImage = itemView.findViewById(R.id.img_child_item);
-            itemView.setOnClickListener(view -> listener.onChildItemClick(childItemList.get(getBindingAdapterPosition())));
+            itemView.setOnClickListener(view -> listener.onChildItemClick(mChildsList.get(getBindingAdapterPosition())));
         }
 
-        private void setChildInfo(ChildItem childInfo) {
-            childItemTitle.setText(String.valueOf(childInfo.getmProductId()));
-            Glide.with(mCtx).load(childInfo.getmProductIdImage()).into(mImage);
+        private void setChildInfo(Product product) {
+            childItemTitle.setText(String.valueOf(product.getId()));
+            Glide.with(mCtx).load(product.getImage()).into(mImage);
         }
     }
 
     public interface ListenerChildItem {
-        void onChildItemClick(ChildItem childInfo);
+        void onChildItemClick(Product product);
     }
 } 

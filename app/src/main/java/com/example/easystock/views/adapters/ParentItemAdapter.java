@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.easystock.R;
 import com.example.easystock.models.ChildItem;
 import com.example.easystock.models.ParentItem;
+import com.example.easystock.models.Product;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class ParentItemAdapter extends RecyclerView.Adapter<ParentItemAdapter.Pa
     private Context mCtx;
     private ListenerParentItem listener;
 
-    public ParentItemAdapter(List<ParentItem> itemList, Context context,ListenerParentItem listenerParentItem) {
+    public ParentItemAdapter(List<ParentItem> itemList, Context context, ListenerParentItem listenerParentItem) {
         this.itemList = itemList;
         this.mCtx = context;
         this.listener = listenerParentItem;
@@ -109,9 +110,10 @@ public class ParentItemAdapter extends RecyclerView.Adapter<ParentItemAdapter.Pa
             ChildRecyclerView = itemView.findViewById(R.id.child_recyclerview);
         }
     }
+
     public interface ListenerParentItem {
         void onParentItemClick(ParentItem parentItem);
 
-        void onChildItemClick(ChildItem childItem);
+        void onChildItemClick(Product product);
     }
 } 

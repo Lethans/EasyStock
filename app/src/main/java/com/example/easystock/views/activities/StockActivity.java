@@ -1,6 +1,8 @@
 package com.example.easystock.views.activities;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.ImageDecoder;
@@ -10,14 +12,17 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -41,11 +46,11 @@ public class StockActivity extends AppCompatActivity {
     public final static String PRODUCT_UPDATE = "PRODUCT_UPDATE";
     private String mCurrentPhotoPath = null;
     private ProductViewModel mProductViewModel;
-    private EditText editStock, editType, editMaterial, editcolorCode, editSpecificColor, editColorDescription,
+    private EditText editStock, editType, editMaterial, editcolorCode, editColorDescription,
             editCostPrice, editPrice, editPriceOne, editPriceTwo, editPriceThree, editProductCode,
             editDescription, editSuplierBill;
-    private Button btnPhoto, btnGallery, btnCancel, btnAcept;
-    private CheckBox xsCheck, sCheck, mCheck, lCheck, xlCheck, xxlCheck, xxxlCheck, unicCheck, chkDeleteFields;
+    private Button btnPhoto, btnCancel, btnAcept;
+    private CheckBox xsCheck, sCheck, mCheck, lCheck, xlCheck, xxlCheck, xxxlCheck, unicCheck, chkDeleteFields, chkMultiplePrices;
     private ImageView productImage;
     private Product mProduct;
 
@@ -65,8 +70,12 @@ public class StockActivity extends AppCompatActivity {
         }
 
 
-        btnPhoto.setOnClickListener(v -> openCamara());
-        btnGallery.setOnClickListener(v -> onPickPhoto());
+        chkMultiplePrices.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            ConstraintLayout priceLayout = findViewById(R.id.constraintMultiplePrices);
+            priceLayout.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+        });
+
+        btnPhoto.setOnClickListener(v -> selectImage());
 
         btnCancel.setOnClickListener(v -> {
             resetValues();
@@ -79,7 +88,7 @@ public class StockActivity extends AppCompatActivity {
             if (TextUtils.equals(btnAcept.getText().toString().toUpperCase(), "ACEPTAR")) {
                 //Guardo producto.
                 Product product = new Product(getEditextValue(editType), getEditextValue(editMaterial), getEditextValue(editStock),
-                        getEditextValue(editcolorCode), getEditextValue(editSpecificColor), getEditextValue(editColorDescription),
+                        getEditextValue(editcolorCode), getEditextValue(editColorDescription),
                         getEditextValue(editCostPrice), getEditextValue(editPrice), priceList, getProductSize(), getEditextValue(editProductCode),
                         getEditextValue(editDescription), getEditextValue(editSuplierBill), mCurrentPhotoPath);
 
@@ -90,7 +99,6 @@ public class StockActivity extends AppCompatActivity {
                 mProduct.setMaterial(getEditextValue(editMaterial));
                 mProduct.setStock(getEditextValue(editStock));
                 mProduct.setColor(getEditextValue(editcolorCode));
-                mProduct.setSpecificColor(getEditextValue(editSpecificColor));
                 mProduct.setColorDescription(getEditextValue(editColorDescription));
                 mProduct.setCostPrice(getEditextValue(editCostPrice));
                 mProduct.setPrice(getEditextValue(editPrice));
@@ -114,7 +122,6 @@ public class StockActivity extends AppCompatActivity {
         editMaterial = findViewById(R.id.productMaterial);
         editStock = findViewById(R.id.productStock);
         editcolorCode = findViewById(R.id.productGeneralColor);
-        editSpecificColor = findViewById(R.id.productSpecificColor);
         editColorDescription = findViewById(R.id.productDescriptionColor);
         editCostPrice = findViewById(R.id.productCostPrice);
         editPrice = findViewById(R.id.productPrice);
@@ -131,6 +138,8 @@ public class StockActivity extends AppCompatActivity {
         xxxlCheck = findViewById(R.id.xxxlSize);
         unicCheck = findViewById(R.id.unicSize);
 
+        chkMultiplePrices = findViewById(R.id.multiplePriceProductsCheck);
+
 
         editProductCode = findViewById(R.id.productCode);
         editDescription = findViewById(R.id.productDescription);
@@ -138,7 +147,7 @@ public class StockActivity extends AppCompatActivity {
 
         chkDeleteFields = findViewById(R.id.deletAllFields);
         btnPhoto = findViewById(R.id.btnTakePhoto);
-        btnGallery = findViewById(R.id.btnRequestGallery);
+        //btnGallery = findViewById(R.id.btnRequestGallery);
         btnCancel = findViewById(R.id.btnCancelProduct);
         btnAcept = findViewById(R.id.btnAceptProduct);
 
@@ -151,7 +160,6 @@ public class StockActivity extends AppCompatActivity {
         editMaterial.setText(product.getMaterial());
         editStock.setText(product.getStock());
         editcolorCode.setText(product.getColor());
-        editSpecificColor.setText(product.getSpecificColor());
         editColorDescription.setText(product.getColorDescription());
         editCostPrice.setText(product.getCostPrice());
         editPrice.setText(product.getPrice());
@@ -169,6 +177,30 @@ public class StockActivity extends AppCompatActivity {
 
     private String getEditextValue(EditText editText) {
         return editText.getText().toString().trim();
+    }
+
+    private void selectImage() {
+        final CharSequence[] options = {"Camara", "Galería", "Cancel"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Selecciona una foto");
+
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (options[item].equals("Camara")) {
+                    openCamara();
+
+                } else if (options[item].equals("Galería")) {
+                    onPickPhoto();
+
+                } else if (options[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
     }
 
     public void onPickPhoto() {
@@ -278,7 +310,6 @@ public class StockActivity extends AppCompatActivity {
         editMaterial.setText("");
         editStock.setText("");
         editcolorCode.setText("");
-        editSpecificColor.setText("");
         editColorDescription.setText("");
         editCostPrice.setText("");
         editPrice.setText("");

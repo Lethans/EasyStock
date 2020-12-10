@@ -33,6 +33,7 @@ public class ProductSellFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private List<Product> mProductList;
+    private NotificableProductSell listener;
 
 
     public static ProductSellFragment newInstance(List<Product> productList) {
@@ -64,8 +65,9 @@ public class ProductSellFragment extends Fragment {
             }
 
             @Override
-            public void onChildItemClick(ChildItem childItem) {
-                Toast.makeText(getContext(), childItem.getmProductIdPrice(), Toast.LENGTH_SHORT).show();
+            public void onChildItemClick(Product product) {
+                listener.insertProduct(product);
+                //Toast.makeText(getContext(), childItem.getmProductIdPrice(), Toast.LENGTH_SHORT).show();
             }
         });
         ParentRecyclerViewItem.setAdapter(parentItemAdapter);
@@ -94,29 +96,30 @@ public class ProductSellFragment extends Fragment {
         return itemList;
     }
 
-    private List<ChildItem> ChildItemList(List<Product> productList, String code) {
-        List<ChildItem> ChildItemList = new ArrayList<>();
+    private List<Product> ChildItemList(List<Product> productList, String code) {
+        List<Product> childItemList = new ArrayList<>();
         for (int i = 0; i < productList.size(); i++) {
             if (productList.get(i).getCode().equals(code)) {
-                int id = productList.get(i).getId();
+/*                int id = productList.get(i).getId();
                 String type = productList.get(i).getType();
                 String price = productList.get(i).getPrice();
                 String size = productList.get(i).getSize();
                 String image = productList.get(i).getImage();
-                ChildItemList.add(new ChildItem(id, type, price, size, image));
+                ChildItemList.add(new ChildItem(id, type, price, size, image));*/
+                childItemList.add(productList.get(i));
             }
         }
-        return ChildItemList;
+        return childItemList;
     }
 
-    public interface NotificableMenuFragment {
+    public interface NotificableProductSell {
         void insertProduct(Product product);
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        //notificableMenuFragment = (NotificableMenuFragment) context;
+        listener = (NotificableProductSell) context;
     }
 
 }

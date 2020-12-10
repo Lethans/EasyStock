@@ -37,8 +37,7 @@ public class ProductFilter extends Filter {
                         filterList.get(i).getPrice().toLowerCase().contains(sequence) ||
                         filterList.get(i).getColor().toLowerCase().contains(sequence) ||
                         filterList.get(i).getCostPrice().toLowerCase().contains(sequence) ||
-                        filterList.get(i).getColorDescription().toLowerCase().contains(sequence) ||
-                        filterList.get(i).getSpecificColor().toLowerCase().contains(sequence)) {
+                        filterList.get(i).getColorDescription().toLowerCase().contains(sequence)) {
                     filteredList.add(filterList.get(i));
                 }
             }

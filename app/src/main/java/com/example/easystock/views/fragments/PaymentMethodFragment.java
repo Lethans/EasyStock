@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +22,10 @@ public class PaymentMethodFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private List<Product> mProductList;
+    private RadioButton unicPaymentCheck;
+    private RadioButton multiPaymentCheck;
+    private ConstraintLayout unicPaymentLayout;
+    private ConstraintLayout multiPaymentLayout;
 
 
     public static PaymentMethodFragment newInstance(List<Product> productList) {
@@ -38,11 +44,27 @@ public class PaymentMethodFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_payment_method, container, false);
         RecyclerView ParentRecyclerViewItem = view.findViewById(R.id.parent_recyclerview);
+        unicPaymentCheck = view.findViewById(R.id.unicPaymentCheckout);
+        multiPaymentCheck = view.findViewById(R.id.multipaymentCheckout);
+        unicPaymentLayout = view.findViewById(R.id.unicPaymentLayout);
+        multiPaymentLayout = view.findViewById(R.id.multiPaymentLayout);
 
         mProductList = (List<Product>) getArguments().getSerializable("products");
 
-        return view;
+        handleLayoutVisibility();
 
+        return view;
+    }
+
+    public void handleLayoutVisibility() {
+        unicPaymentCheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            unicPaymentLayout.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+            //multiPaymentLayout.setVisibility(View.GONE);
+        });
+        multiPaymentCheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            //unicPaymentLayout.setVisibility(View.GONE);
+            multiPaymentLayout.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+        });
     }
 
     public interface NotificableMenuFragment {
