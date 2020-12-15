@@ -127,7 +127,7 @@ public class ShowStock extends AppCompatActivity {
                     mAdapter.getFilter().filter(charSequence.toString());
                 else {
                     mAdapter.setProductList(mProductList);
-                    mAdapter.notifyDataSetChanged();
+                    //mAdapter.notifyDataSetChanged();
                 }
             }
 

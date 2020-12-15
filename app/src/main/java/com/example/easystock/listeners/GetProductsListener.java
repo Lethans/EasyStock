@@ -4,7 +4,7 @@ import com.example.easystock.models.Product;
 
 import java.util.List;
 
-public interface GetSimilarProductsListener {
+public interface GetProductsListener {
     void onReceivedProducts(List<Product> productList);
 
     void onVoidProducts(String msj);

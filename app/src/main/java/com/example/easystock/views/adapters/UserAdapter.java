@@ -90,6 +90,7 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public void setUserList(List<User> userList) {
         this.userList = userList;
+        notifyDataSetChanged();
     }
 
     public void showMenu(int position) {

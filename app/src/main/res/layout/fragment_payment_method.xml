@@ -6,83 +6,134 @@
     android:layout_height="match_parent"
     android:background="#AF6C6C">
 
-
-    <RadioGroup
-        android:id="@+id/radioGroup"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:orientation="horizontal"
+    <Button
+        android:id="@+id/btnAddPayments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Agregar pagos"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/cashTextview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Efectivo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
 
-        <RadioButton
-            android:id="@+id/unicPaymentCheckout"
-            android:layout_width="0dp"
+    <EditText
+        android:id="@+id/paymentCash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Efectivo"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="@+id/cashTextview"
+        app:layout_constraintStart_toEndOf="@+id/cashTextview"
+        app:layout_constraintTop_toTopOf="@+id/cashTextview" />
+
+    <TextView
+        android:id="@+id/plasticTextview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Tarjeta"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cashTextview" />
+
+    <EditText
+        android:id="@+id/paymentPlastic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:hint="Tarjeta"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="@+id/plasticTextview"
+        app:layout_constraintStart_toEndOf="@+id/plasticTextview"
+        app:layout_constraintTop_toTopOf="@+id/plasticTextview" />
+
+    <!--
+        <EditText
+            android:id="@+id/paymentPlasticCode"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Unico medio de pago" />
+            android:text="Codigo"
+            app:layout_constraintBottom_toBottomOf="@+id/paymentPlastic"
+            app:layout_constraintStart_toEndOf="@+id/paymentPlastic"
+            app:layout_constraintTop_toTopOf="@+id/paymentPlastic" />-->
 
-        <RadioButton
-            android:id="@+id/multipaymentCheckout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Multiples Medios de pago" />
+    <TextView
+        android:id="@+id/voucherTextview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Vales"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/plasticTextview" />
 
-    </RadioGroup>
+    <EditText
+        android:id="@+id/paymentVoucher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Voucher"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="@+id/voucherTextview"
+        app:layout_constraintStart_toEndOf="@+id/voucherTextview"
+        app:layout_constraintTop_toTopOf="@+id/voucherTextview" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/unicPaymentLayout"
+    <TextView
+        android:id="@+id/returnTextview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Cambio"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/voucherTextview" />
+
+    <EditText
+        android:id="@+id/producChangeCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Codigo Producto"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="@+id/returnTextview"
+        app:layout_constraintStart_toEndOf="@+id/returnTextview"
+        app:layout_constraintTop_toTopOf="@+id/returnTextview" />
+
+    <Button
+        android:id="@+id/btnSearchProductChange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Buscar"
+        app:layout_constraintBottom_toBottomOf="@+id/chkIncludStock"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/chkIncludStock"
+        app:layout_constraintTop_toTopOf="@+id/producChangeCode" />
+
+    <CheckBox
+        android:id="@+id/chkIncludStock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Incluir el stock en la busqueda"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/producChangeCode" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerChangeProducts"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="visible"
+        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toTopOf="@+id/bottomGuideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="UNICO MEDIO DE PAGO"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/multiPaymentLayout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/bottomGuideline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="MULTIPLES MEDIO DE PAGO"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <!--    <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="10dp"
-            android:layout_height="10dp"
-            tools:layout_editor_absoluteX="112dp"
-            tools:layout_editor_absoluteY="235dp" />-->
+        app:layout_constraintTop_toBottomOf="@+id/chkIncludStock" />
 
     <ImageView
+        android:id="@+id/imageView4"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/purple_700"
@@ -92,6 +143,7 @@
         app:layout_constraintTop_toTopOf="@+id/bottomGuideline" />
 
     <ImageView
+        android:id="@+id/imageView3"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:src="@drawable/ic_baseline_arrow_right_24"
@@ -99,7 +151,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/bottomGuideline" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Productos"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageViewPrevious"
+        app:layout_constraintTop_toTopOf="@+id/bottomGuideline" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No se como nombrar esta"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageView3"
+        app:layout_constraintTop_toTopOf="@+id/bottomGuideline" />
+
     <ImageView
+        android:id="@+id/imageViewPrevious"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:src="@drawable/ic_baseline_arrow_left_24"

@@ -8,7 +8,6 @@ import androidx.room.TypeConverters;
 import com.example.easystock.models.converters.ListPaymentTypeConverter;
 import com.example.easystock.models.converters.ListProductsTypeConverter;
 import com.example.easystock.models.converters.UserTypeConverter;
-import com.example.easystock.models.repositories.Payment;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -19,7 +18,6 @@ public class Order implements Serializable {
 
     @PrimaryKey()
     private int id;
-
     private String datetime;
     private String paymentMethod;
     private String discount;

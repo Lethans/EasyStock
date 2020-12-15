@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.easystock.listeners.GetSimilarProductsListener;
+import com.example.easystock.listeners.GetProductsListener;
 import com.example.easystock.models.Product;
 import com.example.easystock.models.dao.ProductDao;
 import com.example.easystock.models.db.AppDatabase;
@@ -123,20 +123,24 @@ public class ProductRepository {
         }
     }
 
-    public void getSimilarbyTypeMaterial(String type, String material, int id, GetSimilarProductsListener getSimilarProductsListener) {
+    public void getSimilarbyTypeMaterial(String type, String material, int id, GetProductsListener getSimilarProductsListener) {
         new GetSimilarbyTypeMaterialAsyncTask(mProductDao, getSimilarProductsListener, type, material, id).execute();
+    }
+
+    public void getProductsByCode(String code, GetProductsListener getSimilarProductsListener) {
+        new GetProductByCodeAsyncTask(mProductDao, getSimilarProductsListener, code).execute();
     }
 
 
     public class GetSimilarbyTypeMaterialAsyncTask extends AsyncTask<Void, Void, List<Product>> {
 
         private ProductDao mAsyncTaskDao;
-        private GetSimilarProductsListener mListener;
+        private GetProductsListener mListener;
         private String mType;
         private String mMaterial;
         private int mId;
 
-        public GetSimilarbyTypeMaterialAsyncTask(ProductDao dao, GetSimilarProductsListener listener, String type, String material, int id) {
+        public GetSimilarbyTypeMaterialAsyncTask(ProductDao dao, GetProductsListener listener, String type, String material, int id) {
             mAsyncTaskDao = dao;
             mListener = listener;
             this.mType = type;
@@ -156,6 +160,36 @@ public class ProductRepository {
                 mListener.onReceivedProducts(isAnyReceived);
             } else {
                 mListener.onVoidProducts("No existen productos similares");
+            }
+        }
+    }
+
+
+    public class GetProductByCodeAsyncTask extends AsyncTask<Void, Void, List<Product>> {
+
+        private ProductDao mAsyncTaskDao;
+        private GetProductsListener mListener;
+        private String mCode;
+
+
+        public GetProductByCodeAsyncTask(ProductDao dao, GetProductsListener listener, String code) {
+            mAsyncTaskDao = dao;
+            mListener = listener;
+            this.mCode = code;
+        }
+
+        @Override
+        protected List<Product> doInBackground(Void... voids) {
+            return mAsyncTaskDao.getProductsByCode(mCode);
+        }
+
+        @Override
+        synchronized protected void onPostExecute(List<Product> isAnyReceived) {
+            super.onPostExecute(isAnyReceived);
+            if (isAnyReceived != null) {
+                mListener.onReceivedProducts(isAnyReceived);
+            } else {
+                mListener.onVoidProducts("No existen productos con ese codigo");
             }
         }
     }

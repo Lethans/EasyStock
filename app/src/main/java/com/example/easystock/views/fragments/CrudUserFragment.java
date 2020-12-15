@@ -60,14 +60,14 @@ public class CrudUserFragment extends Fragment {
         btnAcept.setOnClickListener(v -> {
             if (validation()) {
                 if (TextUtils.equals(btnAcept.getText().toString().toUpperCase(), "AGREGAR")) {
-                    mUser = new User(getEditextValue(editName), getEditextValue(editLastName), getEditextValue(editPassword),
-                            getEditextValue(editPhone), rolSwitch.isChecked() ? "9" : "1");
+                    mUser = new User(getValue(editName), getValue(editLastName), getValue(editPassword),
+                            getValue(editPhone), rolSwitch.isChecked() ? "9" : "1");
                     userViewModel.insertUser(mUser);
                 } else if (TextUtils.equals(btnAcept.getText().toString().toUpperCase(), "MODIFICAR")) {
-                    mUser.setName(getEditextValue(editName));
-                    mUser.setLastName(getEditextValue(editLastName));
-                    mUser.setPassword(getEditextValue(editPassword));
-                    mUser.setPhone(getEditextValue(editPhone));
+                    mUser.setName(getValue(editName));
+                    mUser.setLastName(getValue(editLastName));
+                    mUser.setPassword(getValue(editPassword));
+                    mUser.setPhone(getValue(editPhone));
                     mUser.setRole(rolSwitch.isChecked() ? "9" : "1");
                     userViewModel.updateUser(mUser);
                 }
@@ -104,11 +104,11 @@ public class CrudUserFragment extends Fragment {
 
     private boolean validation() {
 
-        String name = getEditextValue(editName);
-        String lastName = getEditextValue(editLastName);
-        String password = getEditextValue(editPassword);
-        String passwordConfirm = getEditextValue(editConfirmPassword);
-        String phone = getEditextValue(editPhone);
+        String name = getValue(editName);
+        String lastName = getValue(editLastName);
+        String password = getValue(editPassword);
+        String passwordConfirm = getValue(editConfirmPassword);
+        String phone = getValue(editPhone);
 
         boolean validados = true;
 
@@ -148,7 +148,7 @@ public class CrudUserFragment extends Fragment {
         return string.replaceAll("[^\\d]", "");
     }
 
-    private String getEditextValue(EditText editText) {
+    private String getValue(EditText editText) {
         return editText.getText().toString().trim();
     }
 

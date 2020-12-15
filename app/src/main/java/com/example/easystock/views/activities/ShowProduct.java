@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,11 +17,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.easystock.R;
 import com.example.easystock.controllers.ProductViewModel;
-import com.example.easystock.listeners.GetSimilarProductsListener;
+import com.example.easystock.listeners.GetProductsListener;
 import com.example.easystock.models.Product;
 import com.example.easystock.views.adapters.SimilarProductAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ShowProduct extends AppCompatActivity {
@@ -58,12 +56,12 @@ public class ShowProduct extends AppCompatActivity {
                 loadProduct(mProduc);
             });
 
-            mProductViewModel.getSimilarbyTypeMaterial(mProduc.getType(), mProduc.getMaterial(), mProduc.getId(), new GetSimilarProductsListener() {
+            mProductViewModel.getSimilarbyTypeMaterial(mProduc.getType(), mProduc.getMaterial(), mProduc.getId(), new GetProductsListener() {
                 @Override
                 public void onReceivedProducts(List<Product> productList) {
                     setRecycler();
                     mAdapter.setProductList(productList);
-                    mAdapter.notifyDataSetChanged();
+                    //mAdapter.notifyDataSetChanged();
                 }
 
                 @Override

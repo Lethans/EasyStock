@@ -58,7 +58,7 @@ public class ProductFilter extends Filter {
     protected void publishResults(CharSequence constraint, FilterResults results) {
 
         productAdapter.setProductList((List<Product>) results.values);
-        productAdapter.notifyDataSetChanged();
+        //productAdapter.notifyDataSetChanged();
 
     }
 

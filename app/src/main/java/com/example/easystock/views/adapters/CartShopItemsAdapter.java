@@ -60,6 +60,21 @@ public class CartShopItemsAdapter extends RecyclerView.Adapter {
 
     public void setProductList(List<Product> productList) {
         this.productList = productList;
+        notifyDataSetChanged();
+    }
+
+    public void removeItem(int position) {
+        productList.remove(position);
+        notifyDataSetChanged();
+    }
+
+    public Product getProduct(int adapterPosition) {
+        return productList.get(adapterPosition);
+    }
+
+    public void undoDelete(Product product, int position) {
+        productList.add(position, product);
+        notifyDataSetChanged();
     }
 
     private class ViewHolderCartShopProducts extends RecyclerView.ViewHolder {

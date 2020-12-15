@@ -2,7 +2,7 @@ package com.example.easystock.models.converters;
 
 import androidx.room.TypeConverter;
 
-import com.example.easystock.models.repositories.Payment;
+import com.example.easystock.models.Payment;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

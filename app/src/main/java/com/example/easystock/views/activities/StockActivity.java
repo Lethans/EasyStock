@@ -67,6 +67,10 @@ public class StockActivity extends AppCompatActivity {
             mProduct = (Product) intent.getExtras().getSerializable(PRODUCT_UPDATE);
             btnAcept.setText("Modificar");
             setProductData(mProduct);
+            CheckBox chkMultiplePrices = findViewById(R.id.multiplePriceProductsCheck);
+            ConstraintLayout priceLayout = findViewById(R.id.constraintMultiplePrices);
+            chkMultiplePrices.setVisibility(View.GONE);
+            priceLayout.setVisibility(View.GONE);
         }
 
 
@@ -81,19 +85,15 @@ public class StockActivity extends AppCompatActivity {
             resetValues();
         });
         btnAcept.setOnClickListener(v -> {
-            List<String> priceList = new ArrayList<>();
-            priceList.add(getEditextValue(editPriceOne));
-            priceList.add(getEditextValue(editPriceTwo));
-            priceList.add(getEditextValue(editPriceThree));
             if (TextUtils.equals(btnAcept.getText().toString().toUpperCase(), "ACEPTAR")) {
-                //Guardo producto.
-                Product product = new Product(getEditextValue(editType), getEditextValue(editMaterial), getEditextValue(editStock),
-                        getEditextValue(editcolorCode), getEditextValue(editColorDescription),
-                        getEditextValue(editCostPrice), getEditextValue(editPrice), priceList, getProductSize(), getEditextValue(editProductCode),
-                        getEditextValue(editDescription), getEditextValue(editSuplierBill), mCurrentPhotoPath);
+                addNewProduct(editPrice);
+                if (!getEditextValue(editPriceOne).isEmpty())
+                    addNewProduct(editPriceOne);
+                if (!getEditextValue(editPriceTwo).isEmpty())
+                    addNewProduct(editPriceTwo);
+                if (!getEditextValue(editPriceThree).isEmpty())
+                    addNewProduct(editPriceThree);
 
-                mProductViewModel.insertProduct(product);
-                Toast.makeText(this, "Producto agregado con exito", Toast.LENGTH_SHORT).show();
             } else {
                 mProduct.setType(getEditextValue(editType));
                 mProduct.setMaterial(getEditextValue(editMaterial));
@@ -102,7 +102,6 @@ public class StockActivity extends AppCompatActivity {
                 mProduct.setColorDescription(getEditextValue(editColorDescription));
                 mProduct.setCostPrice(getEditextValue(editCostPrice));
                 mProduct.setPrice(getEditextValue(editPrice));
-                mProduct.setPriceList(priceList);
                 mProduct.setSize(getProductSize());
                 mProduct.setCode(getEditextValue(editProductCode));
                 mProduct.setDescription(getEditextValue(editDescription));
@@ -163,9 +162,9 @@ public class StockActivity extends AppCompatActivity {
         editColorDescription.setText(product.getColorDescription());
         editCostPrice.setText(product.getCostPrice());
         editPrice.setText(product.getPrice());
-        editPriceOne.setText(product.getPriceList().get(0));
-        editPriceTwo.setText(product.getPriceList().get(1));
-        editPriceThree.setText(product.getPriceList().get(2));
+        //editPriceOne.setText(product.getPriceList().get(0));
+        //editPriceTwo.setText(product.getPriceList().get(1));
+        //editPriceThree.setText(product.getPriceList().get(2));
         setProductSize(product.getSize());
         editProductCode.setText(product.getCode());
         editDescription.setText(product.getDescription());
@@ -303,6 +302,16 @@ public class StockActivity extends AppCompatActivity {
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
+    }
+
+    private void addNewProduct(EditText editextPrice){
+        Product product = new Product(getEditextValue(editType), getEditextValue(editMaterial), getEditextValue(editStock),
+                getEditextValue(editcolorCode), getEditextValue(editColorDescription),
+                getEditextValue(editCostPrice), getEditextValue(editextPrice), getProductSize(), getEditextValue(editProductCode),
+                getEditextValue(editDescription), getEditextValue(editSuplierBill), mCurrentPhotoPath);
+        mProductViewModel.insertProduct(product);
+        Toast.makeText(this, "Producto agregado con exito", Toast.LENGTH_SHORT).show();
+
     }
 
     private void resetValues() {

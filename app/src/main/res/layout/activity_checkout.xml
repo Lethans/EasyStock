@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintCheckout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#03A9F4"
@@ -13,7 +14,7 @@
         android:layout_width="1dp"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
+        app:layout_constraintGuide_percent="0.6" />
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -25,13 +26,46 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Medio de pago"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/paymentListRecycler"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnPdf"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/middleGuideLine"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnPdf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create PDF"
+        app:layout_constraintBottom_toTopOf="@+id/checkoutTotalTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/middleGuideLine" />
+
+    <TextView
+        android:id="@+id/checkoutSubTotalTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Subtotal"
+        app:layout_constraintBottom_toTopOf="@+id/topGuideLine"
+        app:layout_constraintEnd_toStartOf="@+id/checkoutDiscountTextView"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/topGuideLine"
+        app:layout_constraintStart_toStartOf="@+id/middleGuideLine" />
+
+    <TextView
+        android:id="@+id/checkoutDiscountTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Descuento"
+        app:layout_constraintBottom_toTopOf="@+id/topGuideLine"
+        app:layout_constraintEnd_toStartOf="@+id/checkoutTotalTextView"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/checkoutSubTotalTextView" />
 
     <TextView
         android:id="@+id/checkoutTotalTextView"
@@ -40,14 +74,18 @@
         android:text="Total"
         app:layout_constraintBottom_toTopOf="@+id/topGuideLine"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/middleGuideLine" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/checkoutDiscountTextView" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/topGuideLine"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.3" />
+        app:layout_constraintEnd_toStartOf="@+id/checkoutSubTotalTextView"
+        app:layout_constraintGuide_percent="0.3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/checkout_ViewPager"

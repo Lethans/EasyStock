@@ -6,11 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.example.easystock.listeners.GetSimilarProductsListener;
+import com.example.easystock.listeners.GetProductsListener;
 import com.example.easystock.models.Product;
-import com.example.easystock.models.User;
 import com.example.easystock.models.repositories.ProductRepository;
-import com.example.easystock.models.repositories.UserRepository;
 
 import java.util.List;
 
@@ -79,8 +77,12 @@ public class ProductViewModel extends AndroidViewModel {
         mProductRepository.updateProduct(product);
     }
 
-    public void getSimilarbyTypeMaterial(String type, String material, int id, GetSimilarProductsListener getSimilarProductsListener) {
+    public void getSimilarbyTypeMaterial(String type, String material, int id, GetProductsListener getSimilarProductsListener) {
         mProductRepository.getSimilarbyTypeMaterial(type, material, id, getSimilarProductsListener);
+    }
+
+    public void getProductsByCode(String code, GetProductsListener getSimilarProductsListener) {
+        mProductRepository.getProductsByCode(code, getSimilarProductsListener);
     }
 
 }

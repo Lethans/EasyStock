@@ -31,7 +31,6 @@ import java.util.List;
 
 public class ProductSellFragment extends Fragment {
 
-    private RecyclerView mRecyclerView;
     private List<Product> mProductList;
     private NotificableProductSell listener;
 

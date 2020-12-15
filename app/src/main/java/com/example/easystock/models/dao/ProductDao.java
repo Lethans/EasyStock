@@ -44,6 +44,9 @@ public interface ProductDao {
     @Query("SELECT * FROM Product WHERE material LIKE '%'||:material||'%' AND type LIKE '%'||:type||'%' AND id NOT IN (SELECT id FROM Product WHERE id = :id)")
     List<Product> getSimilarbyTypeMaterial(String type, String material, int id);
 
+    @Query("SELECT * FROM Product WHERE code LIKE '%'||:code||'%'")
+    List<Product> getProductsByCode(String code);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertProduct(Product product);
 

@@ -24,11 +24,10 @@ public class Product implements Serializable {
     private String code;
     private String image;
     private String supplierBill;
-    private List<String> priceList;
 
     @Ignore
     public Product(String type, String material, String stock, String generalColor, String colorDescription, String costPrice, String price,
-                   List<String> priceList, String size, String productCode, String description, String supplierBill, String image) {
+                   String size, String productCode, String description, String supplierBill, String image) {
         this.type = type;
         this.material = material;
         this.stock = stock;
@@ -36,7 +35,6 @@ public class Product implements Serializable {
         this.colorDescription = colorDescription;
         this.costPrice = costPrice;
         this.price = price;
-        this.priceList = priceList;
         this.size = size;
         this.code = productCode;
         this.description = description;
@@ -152,11 +150,4 @@ public class Product implements Serializable {
         this.supplierBill = supplierBill;
     }
 
-    public List<String> getPriceList() {
-        return priceList;
-    }
-
-    public void setPriceList(List<String> priceList) {
-        this.priceList = priceList;
-    }
 }

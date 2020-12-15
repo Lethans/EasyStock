@@ -52,6 +52,7 @@ public class SimilarProductAdapter extends RecyclerView.Adapter {
 
     public void setProductList(List<Product> productList) {
         this.productList = productList;
+        notifyDataSetChanged();
     }
 
     private class ViewHolderProducts extends RecyclerView.ViewHolder {

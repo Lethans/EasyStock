@@ -46,7 +46,7 @@ public class UsersFragment extends Fragment {
         mUserViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
         mUserViewModel.getAllUsers().observe(getViewLifecycleOwner(), users -> {
             mAdapter.setUserList(users);
-            mAdapter.notifyDataSetChanged();
+            //mAdapter.notifyDataSetChanged();
         });
         init(view);
         setRecycler();
