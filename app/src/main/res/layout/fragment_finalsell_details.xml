@@ -84,33 +84,70 @@
         app:layout_constraintTop_toTopOf="@+id/orderRemito" />
 
     <CheckBox
-        android:id="@+id/chkSendPdfToPhone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Enviar comprobante"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/orderObservations" />
-
-    <CheckBox
         android:id="@+id/chkCreatePdf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Generar PDF"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/chkSendPdfToPhone"
-        app:layout_constraintTop_toTopOf="@+id/chkSendPdfToPhone" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/orderObservations" />
+
+    <CheckBox
+        android:id="@+id/chkSendPdfToPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enviar comprobante"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chkCreatePdf" />
+
+    <CheckBox
+        android:id="@+id/chkSendThruWhatsapp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enviar por Whatsapp"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chkSendPdfToPhone" />
+
+
+    <EditText
+        android:id="@+id/editCountryCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:inputType="number"
+        android:text="549"
+        app:layout_constraintEnd_toStartOf="@+id/editLocationCode"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chkSendThruWhatsapp" />
+
+    <EditText
+        android:id="@+id/editLocationCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:inputType="number"
+        android:text="11"
+        app:layout_constraintBottom_toBottomOf="@+id/editCountryCode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/editPhone"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/editCountryCode"
+        app:layout_constraintTop_toTopOf="@+id/editCountryCode" />
 
     <EditText
         android:id="@+id/editPhone"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
         android:hint="Telefono"
         android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="@+id/editLocationCode"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chkSendPdfToPhone" />
-
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/editLocationCode"
+        app:layout_constraintTop_toTopOf="@+id/editLocationCode" />
 
     <Button
         android:id="@+id/closeOrderBtn"

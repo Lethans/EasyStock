@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
-    <external-path
-        name="my_images"
-        path="Android/data/com.example.easystock/files/Pictures" />
+    <external-files-path
+        name="files"
+        path="files" />
+    <root-path
+        name="external_files"
+        path="/storage/emulated/0/" />
 </paths>
 
-<!--ORIGINAL-->
-<!--
-    <?xml version="1.0" encoding="utf-8"?>
+    <!--/storage/emulated/0/Android/data/com.example.easystock/files/Pdf/WhatsappTest.pdf-->
+    <!--<?xml version="1.0" encoding="utf-8"?>
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
     <external-path
         name="my_images"
         path="Android/data/com.example.easystock/files/Pictures" />
 </paths>-->
+
+
+
+
+
+

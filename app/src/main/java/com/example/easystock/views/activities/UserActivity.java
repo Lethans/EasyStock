@@ -1,6 +1,7 @@
 package com.example.easystock.views.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.easystock.R;
 import com.example.easystock.controllers.viewModel.UserViewModel;
+import com.example.easystock.databinding.ActivityUsersBinding;
 import com.example.easystock.models.User;
 import com.example.easystock.views.fragments.CrudUserFragment;
 import com.example.easystock.views.fragments.UserProfileFragment;
@@ -25,13 +27,16 @@ public class UserActivity extends AppCompatActivity implements UsersFragment.Not
     public static final String USERS = "USERS";
     public static final String USER_TO_UPDATE = "USER_TO_UPDATE";
 
+    private ActivityUsersBinding mBinding;
+
     private Fragment frameContainer;
     private UserViewModel mUserViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_users);
+        mBinding = DataBindingUtil.setContentView(this,R.layout.activity_users);
+
         mUserViewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
         frameContainer = getSupportFragmentManager().findFragmentById(R.id.usersContainer);

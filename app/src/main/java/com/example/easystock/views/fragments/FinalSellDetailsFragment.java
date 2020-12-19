@@ -2,6 +2,7 @@ package com.example.easystock.views.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -21,7 +23,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.easystock.BuildConfig;
 import com.example.easystock.R;
@@ -34,6 +35,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 public class FinalSellDetailsFragment extends Fragment {
 
@@ -65,77 +67,78 @@ public class FinalSellDetailsFragment extends Fragment {
 
         setOnlyOneDiscount();
 
+        CheckBox chkPdf = view.findViewById(R.id.chkCreatePdf);
+        CheckBox chkPdfSend = view.findViewById(R.id.chkSendPdfToPhone);
+        CheckBox chkWhatsapp = view.findViewById(R.id.chkSendThruWhatsapp);
+
+        EditText editCountry = view.findViewById(R.id.editCountryCode);
+        EditText editLocation = view.findViewById(R.id.editLocationCode);
+        EditText editPhone = view.findViewById(R.id.editPhone);
+
         Button btnCloseOrder = view.findViewById(R.id.closeOrderBtn);
         btnCloseOrder.setOnClickListener(v -> {
-            /** PRIMER INTENTO
-             Intent sendIntent = new Intent(); sendIntent.setAction(Intent.ACTION_SEND);
-             sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
-             sendIntent.setType("text/plain");
-             sendIntent.setPackage("com.whatsapp");
-             startActivity(sendIntent);**/
 
-            /**Segundo intento
-             try {
-             String mobile = "5491164139535";
-             String msg = "Its Working";
-             Intent sendIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://api.whatsapp.com/send?phone=" + mobile + "&text=" + msg));
-             sendIntent.setPackage("com.whatsapp");
-             startActivity(sendIntent);
-             }catch (Exception e){
-             //whatsapp app not install
-             }**/
-            //fixme sendIntent.setPackage("com.whatsapp"); sacando eso, puedo hacer que mande el archivo por otro lado, en el futuro poner un if y hacer un checkbx
-            String mobile = "5491164139535";
-            String msg = "Factura n° 1000-10324024";
-            //Intent sendIntent = new Intent();
-            Intent sendIntent = new Intent(Intent.ACTION_SEND, Uri.parse("https://api.whatsapp.com/send?phone=" + mobile + "&text=" + msg));
+            if (chkPdf.isChecked()) {
+                PdfDocument pmyPdfDocument = new PdfDocument();
+                Paint paint = new Paint();
+                PdfDocument.PageInfo myPageInfo = new PdfDocument.PageInfo.Builder(250, 350, 1).create();
+                PdfDocument.Page myPage = pmyPdfDocument.startPage(myPageInfo);
+                Canvas canvas = myPage.getCanvas();
 
-            //sendIntent.setAction(Intent.ACTION_SEND);
-            //sendIntent.putExtra(Intent.EXTRA_TEXT, "Factura n° 1000-10324024");
-            sendIntent.setType("text/plain");
-            sendIntent.setPackage("com.whatsapp");
+                paint.setTextSize(15.5f);
+                paint.setColor(Color.rgb(0, 50, 250));
 
-            PdfDocument pmyPdfDocument = new PdfDocument();
-            Paint paint = new Paint();
-            PdfDocument.PageInfo myPageInfo = new PdfDocument.PageInfo.Builder(250, 350, 1).create();
-            PdfDocument.Page myPage = pmyPdfDocument.startPage(myPageInfo);
-            Canvas canvas = myPage.getCanvas();
+                canvas.drawText("Esto me vas a tener que pasar un formato de lo que se manda", 20, 20, paint);
+                paint.setTextSize(8.5f);
+                canvas.drawText("Un formato para Remito/Factura etc..", 20, 35, paint);
 
-            paint.setTextSize(15.5f);
-            paint.setColor(Color.rgb(0, 50, 250));
+                pmyPdfDocument.finishPage(myPage);
+                //fixme aca se tiene que cambiar el nombre del pdf
+                File file = new File(getActivity().getExternalFilesDir("/"), "Nuevo" + ".pdf");
 
-            canvas.drawText("Esto es una prueba del pdf", 20, 20, paint);
-            paint.setTextSize(8.5f);
-            canvas.drawText("PapaTwist, plotTwist", 20, 35, paint);
+                try {
+                    pmyPdfDocument.writeTo(new FileOutputStream(file));
+                } catch (IOException e) {
+                    Toast.makeText(getContext(), "Error al generar el PDF", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
+                pmyPdfDocument.close();
 
-            pmyPdfDocument.finishPage(myPage);
-            File file = new File(getActivity().getExternalFilesDir("/"), "WhatsappTest" + ".pdf");
+                if (chkPdfSend.isChecked()) {
+                    Uri uri = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID + ".fileprovider", file);
 
-            try {
-                pmyPdfDocument.writeTo(new FileOutputStream(file));
-            } catch (IOException e) {
-                Toast.makeText(getContext(), "Error 509", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
+                    if (chkWhatsapp.isChecked()) {
+                        if (!whatsappInstalledOrNot("com.whatsapp"))
+                            return;
+                        Intent sendIntent = new Intent("android.intent.action.MAIN");
+                        sendIntent.putExtra(Intent.EXTRA_STREAM, uri);
+                        String country = StringHelper.getEdittextValue(editCountry);
+                        String location = StringHelper.getEdittextValue(editLocation);
+                        String phone = StringHelper.getEdittextValue(editPhone);
+                        //"5491164139535";
+                        String toNumber = country + location + phone;
+                        sendIntent.putExtra("jid", toNumber + "@s.whatsapp.net");
+                        sendIntent.setAction(Intent.ACTION_SEND);
+                        sendIntent.setPackage("com.whatsapp");
+                        sendIntent.setType("application/pdf");
+                        getContext().startActivity(sendIntent);
+                    } else {
+                        Intent share = new Intent(Intent.ACTION_SEND);
+                        share.setType("application/pdf");
+                        share.putExtra(Intent.EXTRA_STREAM, uri);
+                        startActivity(share);
+                    }
+
+                }
+            } else {
+                Toast.makeText(getActivity(), "Tilda Generar PDF y Enviar Comprobante", Toast.LENGTH_SHORT).show();
             }
-            pmyPdfDocument.close();
-
-            sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-            Uri uri = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID + ".fileprovider", file);
-            sendIntent.putExtra(Intent.EXTRA_STREAM, uri);
-            startActivity(sendIntent);
         });
-
-/*        Intent sendIntent = new Intent(); sendIntent.setAction(Intent.ACTION_SEND); sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send."); sendIntent.setType("text/plain"); startActivity(sendIntent);
-        However, if you prefer to share directly to WhatsApp and bypass the system picker, you can do so by using setPackage in your intent:
-
-        sendIntent.setPackage("com.whatsapp");
-        This would simply be set right before you call startActivity(sendIntent);*/
-
 
         return view;
 
     }
+
 
     private void getDiscount() {
         StringHelper.getEdittextValue(editFixDiscount);
@@ -162,6 +165,19 @@ public class FinalSellDetailsFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mListener = (NotificableFinalOrderDetails) context;
+    }
+
+    private boolean whatsappInstalledOrNot(String uri) {
+        PackageManager pm = requireContext().getPackageManager();
+        boolean app_installed = false;
+        try {
+            pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
+            app_installed = true;
+        } catch (PackageManager.NameNotFoundException e) {
+            app_installed = false;
+            Toast.makeText(getActivity(), "Whatsapp no instalado", Toast.LENGTH_SHORT).show();
+        }
+        return app_installed;
     }
 
 }
