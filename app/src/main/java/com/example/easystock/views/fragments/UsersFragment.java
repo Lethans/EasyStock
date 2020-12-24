@@ -7,29 +7,32 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.easystock.R;
 import com.example.easystock.controllers.viewModel.UserViewModel;
+import com.example.easystock.databinding.FragmentUsersBinding;
+import com.example.easystock.interfaces.IUsersActivity;
 import com.example.easystock.models.User;
+import com.example.easystock.views.activities.UserActivity;
 import com.example.easystock.views.adapters.UserAdapter;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
 
 public class UsersFragment extends Fragment {
 
     private UserViewModel mUserViewModel;
-    private UserAdapter mAdapter;
-    private RecyclerView mRecycler;
-    private FloatingActionButton btnAddUser;
-    private NotificableUsersFragment mListener;
+    //private UserAdapter mAdapter;
+    //private RecyclerView mRecycler;
+    //private NotificableUsersFragment mListener;
+
+    private FragmentUsersBinding mBinding;
 
     public UsersFragment() {
     }
@@ -42,40 +45,14 @@ public class UsersFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_users, container, false);
+        mBinding = FragmentUsersBinding.inflate(inflater);
+
         mUserViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
-        mUserViewModel.getAllUsers().observe(getViewLifecycleOwner(), users -> {
-            mAdapter.setUserList(users);
-            //mAdapter.notifyDataSetChanged();
-        });
-        init(view);
-        setRecycler();
+        mUserViewModel.getAllUsers().observe(getViewLifecycleOwner(), users -> mBinding.setUsers(users));
         setRecyclerSwipe();
-        btnAddUser.setOnClickListener(v -> mListener.newUser());
-        return view;
-    }
-
-    private void init(View v) {
-        mRecycler = v.findViewById(R.id.usersRecycler);
-        btnAddUser = v.findViewById(R.id.addUserBtn);
-    }
-
-    private void setRecycler() {
-        mRecycler.setHasFixedSize(true);
-        mRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecycler.setFocusable(false);
-        mAdapter = new UserAdapter(getContext(), new UserAdapter.NotificableDelClickRecycler() {
-            @Override
-            public void notificaUpdate(User user) {
-                mListener.updateUser(user);
-            }
-
-            @Override
-            public void notificaDelete(User user) {
-                mListener.deleteUser(user);
-            }
-        });
-        mRecycler.setAdapter(mAdapter);
+        mBinding.setLifecycleOwner(getViewLifecycleOwner());
+        //binding.lifecycleOwner = this
+        return mBinding.getRoot();
     }
 
     private void setRecyclerSwipe() {
@@ -89,10 +66,11 @@ public class UsersFragment extends Fragment {
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                if (!mAdapter.isMenuShown())
-                    mAdapter.showMenu(viewHolder.getBindingAdapterPosition());
-                else
+                int position = viewHolder.getBindingAdapterPosition();
+                ((UserAdapter) mBinding.usersRecycler.getAdapter()).showMenu(position);
+/*                if (mAdapter.isMenuShown())
                     mAdapter.closeMenu();
+                mAdapter.showMenu(viewHolder.getBindingAdapterPosition());*/
             }
 
             @Override
@@ -111,20 +89,21 @@ public class UsersFragment extends Fragment {
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(touchHelperCallback);
-        itemTouchHelper.attachToRecyclerView(mRecycler);
+        itemTouchHelper.attachToRecyclerView(mBinding.usersRecycler);
     }
 
-    public interface NotificableUsersFragment {
-        void newUser();
+
+    /*    public interface NotificableUsersFragment {
 
         void updateUser(User user);
 
         void deleteUser(User user);
-    }
+    }*/
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        mListener = (UsersFragment.NotificableUsersFragment) context;
+        //mListener = (UsersFragment.NotificableUsersFragment) context;
     }
+
 }

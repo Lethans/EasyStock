@@ -43,8 +43,7 @@
             android:layout_gravity="end|center"
             android:background="@color/white"
             android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            android:src="@drawable/ic_down_arrow" />
+            android:paddingEnd="20dp" />
 
     </androidx.cardview.widget.CardView>
 

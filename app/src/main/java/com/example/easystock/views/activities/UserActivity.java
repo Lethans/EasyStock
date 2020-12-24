@@ -1,5 +1,11 @@
 package com.example.easystock.views.activities;
 
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -7,53 +13,66 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.app.AlertDialog;
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.widget.Toast;
-
 import com.example.easystock.R;
 import com.example.easystock.controllers.viewModel.UserViewModel;
 import com.example.easystock.databinding.ActivityUsersBinding;
+import com.example.easystock.interfaces.IUsersActivity;
 import com.example.easystock.models.User;
 import com.example.easystock.views.fragments.CrudUserFragment;
 import com.example.easystock.views.fragments.UserProfileFragment;
 import com.example.easystock.views.fragments.UsersFragment;
 
-public class UserActivity extends AppCompatActivity implements UsersFragment.NotificableUsersFragment {
+public class UserActivity extends AppCompatActivity implements IUsersActivity {
 
     public static final String USER_PROFILE = "USER_PROFILE";
     public static final String USERS = "USERS";
     public static final String USER_TO_UPDATE = "USER_TO_UPDATE";
 
     private ActivityUsersBinding mBinding;
-
-    private Fragment frameContainer;
     private UserViewModel mUserViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this,R.layout.activity_users);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_users);
 
         mUserViewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
-        frameContainer = getSupportFragmentManager().findFragmentById(R.id.usersContainer);
         Intent intent = getIntent();
         Bundle bundle = new Bundle();
+        Fragment fragment = null;
+        String tag = null;
         if (intent.getExtras().getString(USERS) != null) {
-            frameContainer = UsersFragment.newInstance();
-
+            fragment = UsersFragment.newInstance();
+            tag = getString(R.string.fragment_users);
         } else if (intent.getExtras().getString(USER_PROFILE) != null) {
-
-            frameContainer = UserProfileFragment.newInstance();
+            fragment = UserProfileFragment.newInstance();
+            tag = getString(R.string.fragment_user_profile);
             User user = (User) intent.getExtras().getSerializable(USER_TO_UPDATE);
             bundle.putSerializable(UserProfileFragment.USER, user);
-
         }
-        loadFragment(frameContainer, bundle);
+        loadFragment(fragment, bundle, tag);
 
+
+        mBinding.addUserBtn.setOnClickListener(v -> {
+            if (!(loadedFragment() instanceof CrudUserFragment)) {
+                CrudUserFragment crudFragment = CrudUserFragment.newInstance();
+                loadFragment(crudFragment, null, getString(R.string.fragment_new_user));
+            }
+        });
+
+
+    }
+
+    private void loadFragment(Fragment fragment, Bundle bundle, String fragmentTag) {
+        if (bundle != null)
+            fragment.setArguments(bundle);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right);
+        transaction.replace(R.id.userFrameContainer, fragment, fragmentTag);
+        if (fragment instanceof CrudUserFragment)
+            transaction.addToBackStack(getString(R.string.fragment_new_user));
+        transaction.commit();
     }
 
     public void clearStack() {
@@ -78,32 +97,23 @@ public class UserActivity extends AppCompatActivity implements UsersFragment.Not
 
     @Override
     public void onBackPressed() {
-        //Toast.makeText(this,getSupportFragmentManager().getFragments().size(), Toast.LENGTH_SHORT).show();
-        FragmentManager mFragmentManager = getSupportFragmentManager();
-        Fragment frag = mFragmentManager.findFragmentById(R.id.usersContainer);
-        if (frag instanceof UsersFragment || frag instanceof UserProfileFragment)
+        if (loadedFragment() instanceof UsersFragment || loadedFragment() instanceof UserProfileFragment)
             clearStack();
         super.onBackPressed();
     }
 
     @Override
-    public void newUser() {
-        frameContainer = CrudUserFragment.newInstance();
-        loadFragment(frameContainer, null);
-    }
-
-    @Override
     public void updateUser(User user) {
-        frameContainer = CrudUserFragment.newInstance();
+       CrudUserFragment crudFragment = CrudUserFragment.newInstance();
         Bundle bundle = new Bundle();
         bundle.putSerializable(CrudUserFragment.USER, user);
         bundle.putString(CrudUserFragment.OPERATION, "UPDATE");
-        loadFragment(frameContainer, bundle);
+        loadFragment(crudFragment, bundle, getString(R.string.fragment_new_user));
     }
 
     @Override
     public void deleteUser(User user) {
-        if (!TextUtils.equals(String.valueOf(user.getId()), "1")) {
+       if (!TextUtils.equals(String.valueOf(user.getId()), "1")) {
             new AlertDialog.Builder(UserActivity.this)
                     .setIcon(R.drawable.ic_baseline_arrow_right_24)
                     .setTitle("Borrar usuario")
@@ -120,18 +130,8 @@ public class UserActivity extends AppCompatActivity implements UsersFragment.Not
         }
     }
 
-    private void loadFragment(Fragment fragment, Bundle bundle) {
-        //frameContainer = CrudUserFragment.newInstance();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        //Bundle bundle = new Bundle();
-        //bundle.putSerializable(CrudUserFragment.USER, user);
-        //bundle.putString(CrudUserFragment.OPERATION, "UPDATE");
-        fragment.setArguments(bundle);
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right);
-        transaction.replace(R.id.usersContainer, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+    private Fragment loadedFragment() {
+        FragmentManager mFragmentManager = getSupportFragmentManager();
+        return mFragmentManager.findFragmentById(R.id.userFrameContainer);
     }
-
 }

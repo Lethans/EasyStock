@@ -3,8 +3,10 @@ package com.example.easystock.controllers.viewModel;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.Bindable;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.example.easystock.listeners.GetUserFingerprintListener;
 import com.example.easystock.models.User;
@@ -24,6 +26,7 @@ public class UserViewModel extends AndroidViewModel {
         mUserRepository = new UserRepository(application);
         mAllUsers = mUserRepository.getAllUsers();
     }
+
 
     public LiveData<List<User>> getAllUsers() {
         return mAllUsers;
