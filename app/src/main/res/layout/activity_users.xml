@@ -1,37 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
+    <data>
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+        <import type="android.view.View" />
 
-    <FrameLayout
-        android:id="@+id/userFrameContainer"
+        <variable
+            name="isNewUser"
+            type="boolean" />
+
+    </data>
+
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
 
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottom_bar"
-        style="@style/Widget.MaterialComponents.BottomAppBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:backgroundTint="@color/design_default_color_primary"
-        app:fabCradleRoundedCornerRadius="5dp" />
+        <FrameLayout
+            android:id="@+id/userFrameContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addUserBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/biometric_error_color"
-        android:src="@drawable/ic_baseline_add_24"
-        app:borderWidth="0dp"
-        app:fabSize="auto"
-        app:layout_anchor="@id/bottom_bar" />
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottom_bar"
+            style="@style/Widget.MaterialComponents.BottomAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:backgroundTint="@color/design_default_color_primary"
+            android:visibility="@{isNewUser ? View.VISIBLE:View.GONE}"
+            app:fabCradleRoundedCornerRadius="5dp" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/addUserBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/biometric_error_color"
+            android:src="@drawable/ic_baseline_add_24"
+            android:visibility="@{isNewUser ? View.VISIBLE:View.GONE}"
+            app:borderWidth="0dp"
+            app:fabSize="auto"
+            app:layout_anchor="@id/bottom_bar" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>
 

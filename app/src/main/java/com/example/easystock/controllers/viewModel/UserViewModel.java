@@ -3,12 +3,11 @@ package com.example.easystock.controllers.viewModel;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.Bindable;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
-import com.example.easystock.listeners.GetUserFingerprintListener;
+import com.example.easystock.listeners.GetUserListener;
+import com.example.easystock.listeners.GetUsersCountListener;
 import com.example.easystock.models.User;
 import com.example.easystock.models.repositories.UserRepository;
 
@@ -36,9 +35,9 @@ public class UserViewModel extends AndroidViewModel {
         return mUserRepository.getUserLogged();
     }
 
-    public LiveData<User> getUserFingerPrint() {
+    /*public LiveData<User> getUserFingerPrint() {
         return mUserRepository.getUserFingerPrint();
-    }
+    }*/
 
     public void insertUser(User user) {
         mUserRepository.insertUser(user);
@@ -53,10 +52,18 @@ public class UserViewModel extends AndroidViewModel {
     }
 
     public void updateUsersLogged(User user) {
-        mUserRepository.updateUsersLogged(user, user.getId());
+        mUserRepository.updateUsersLogged(user);
     }
 
-    public void getUserWithFingerprint(GetUserFingerprintListener listener) {
-        mUserRepository.getUserWithFingerprint(listener);
+    public void getLoginUser(String username, String password, GetUserListener listener) {
+        mUserRepository.getLoginUser(username, password, listener);
+    }
+
+    public void getUserFingerprint(String androidId, GetUserListener listener) {
+        mUserRepository.getUserFingerprint(androidId, listener);
+    }
+
+    public void getUsersCount(GetUsersCountListener listener) {
+        mUserRepository.getUsersCount(listener);
     }
 }

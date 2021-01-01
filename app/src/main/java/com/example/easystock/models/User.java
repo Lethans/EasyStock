@@ -12,43 +12,54 @@ public class User implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
+    private String username;
     private String name;
     private String lastName;
     private String password;
+    private String email;
     private String phone;
     private String role;
     private boolean isLogged;
     private boolean sync;
-    private String fingerprint;
+    private String androidIdFingerprint;
     private boolean isShowMenu;
 
     @Ignore
-    public User(int id, String name, String lastName, String password, String phone, String role) {
+    public User(int id, String username, String name, String lastName, String password, String email, String phone, String role) {
         this.id = id;
+        this.username = username;
         this.name = name;
         this.lastName = lastName;
         this.password = password;
+        this.email = email;
         this.phone = phone;
         this.role = role;
         this.isLogged = false;
-        this.fingerprint = "NO";
+        this.androidIdFingerprint = "";
         this.sync = false;
         this.isShowMenu = false;
     }
+
     @Ignore
-    public User(String name, String lastName, String password, String phone, String role) {
+    public User(String username, String name, String lastName, String password, String email, String phone, String role) {
+        this.username = username;
         this.name = name;
         this.lastName = lastName;
         this.password = password;
+        this.email = email;
         this.phone = phone;
         this.role = role;
         this.isLogged = false;
-        this.fingerprint = "NO";
+        this.androidIdFingerprint = "";
         this.sync = false;
         this.isShowMenu = false;
     }
 
     public User() {
+        this.isLogged = false;
+        this.androidIdFingerprint = "";
+        this.sync = false;
+        this.isShowMenu = false;
     }
 
     public int getId() {
@@ -115,12 +126,12 @@ public class User implements Serializable {
         this.sync = sync;
     }
 
-    public String getFingerprint() {
-        return fingerprint;
+    public String getAndroidIdFingerprint() {
+        return androidIdFingerprint;
     }
 
-    public void setFingerprint(String fingerprint) {
-        this.fingerprint = fingerprint;
+    public void setAndroidIdFingerprint(String androidIdFingerprint) {
+        this.androidIdFingerprint = androidIdFingerprint;
     }
 
     public boolean isShowMenu() {
@@ -129,5 +140,21 @@ public class User implements Serializable {
 
     public void setShowMenu(boolean showMenu) {
         isShowMenu = showMenu;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

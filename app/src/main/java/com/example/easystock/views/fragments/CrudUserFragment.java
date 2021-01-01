@@ -1,6 +1,7 @@
 package com.example.easystock.views.fragments;
 
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +11,12 @@ import android.widget.EditText;
 
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.easystock.R;
 import com.example.easystock.controllers.viewModel.UserViewModel;
+import com.example.easystock.databinding.FragmentNewUserBinding;
 import com.example.easystock.models.User;
 import com.example.easystock.utils.Constants;
 
@@ -23,117 +26,93 @@ public class CrudUserFragment extends Fragment {
     public static final String OPERATION = "OPERATION";
 
     private UserViewModel userViewModel;
-    private EditText editName, editLastName, editPassword, editConfirmPassword, editPhone;
-    private SwitchCompat rolSwitch;
-    private Button btnAcept, btnCancel;
     private User mUser;
+
+    private FragmentNewUserBinding mBinding;
 
 
     public static CrudUserFragment newInstance() {
-        CrudUserFragment fragment = new CrudUserFragment();
-        return fragment;
+        return new CrudUserFragment();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_new_user, container, false);
+        mBinding = FragmentNewUserBinding.inflate(inflater);
 
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
-        init(view);
-
         Bundle bundle = getArguments();
         if (bundle != null) {
-            mUser = (User) bundle.getSerializable(USER);
-            btnAcept.setText(bundle.getString(OPERATION) == null ? "Agregar" : "Modificar");
-            setUserData(mUser);
+            mBinding.setIsUpdated(true);
+            mBinding.setUser((User) bundle.getSerializable(USER));
+            mBinding.setIsAdmin(((User) bundle.getSerializable(USER)).getRole().equals("9"));
+            if (mBinding.getUser().getId() == 1) {
+                mBinding.userRoleSwitch.setClickable(false);
+            }
         } else {
-            btnAcept.setText("Agregar");
+            mBinding.setIsUpdated(false);
         }
 
 
-        btnCancel.setOnClickListener(v -> {
+        mBinding.btnCancelUser.setOnClickListener(v -> {
+            FragmentManager fragmentManager = getParentFragmentManager();
+            fragmentManager.popBackStack();
         });
 
+        //FIXME ACA EL ANDROID ID PARA CUANDO CREAR EL USUARIO Y LOGUEARLE LA PRIMERA VEZ
+        //String androidId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
-        btnAcept.setOnClickListener(v -> {
+        mBinding.btnAceptUser.setOnClickListener(v -> {
             if (validation()) {
-                if (TextUtils.equals(btnAcept.getText().toString().toUpperCase(), "AGREGAR")) {
-                    mUser = new User(getValue(editName), getValue(editLastName), getValue(editPassword),
-                            getValue(editPhone), rolSwitch.isChecked() ? "9" : "1");
-                    userViewModel.insertUser(mUser);
-                } else if (TextUtils.equals(btnAcept.getText().toString().toUpperCase(), "MODIFICAR")) {
-                    mUser.setName(getValue(editName));
-                    mUser.setLastName(getValue(editLastName));
-                    mUser.setPassword(getValue(editPassword));
-                    mUser.setPhone(getValue(editPhone));
-                    mUser.setRole(rolSwitch.isChecked() ? "9" : "1");
+                if (mBinding.getIsUpdated()) {
+                    mUser.setName(getValue(mBinding.nameEdit));
+                    mUser.setLastName(getValue(mBinding.userLastName));
+                    mUser.setPassword(getValue(mBinding.userPassword));
+                    mUser.setPhone(getValue(mBinding.userPhone));
+                    mUser.setRole(mBinding.userRoleSwitch.isChecked() ? "9" : "1");
                     userViewModel.updateUser(mUser);
+                } else {
+                    mUser = new User(getValue(mBinding.userNameEdit), getValue(mBinding.nameEdit), getValue(mBinding.userLastName), getValue(mBinding.userPassword), getValue(mBinding.userEmail),
+                            getValue(mBinding.userPhone), mBinding.userRoleSwitch.isChecked() ? "9" : "1");
+                    userViewModel.insertUser(mUser);
                 }
             }
         });
-        return view;
-    }
-
-    private void init(View layout) {
-        editName = layout.findViewById(R.id.userName);
-        editLastName = layout.findViewById(R.id.userLastName);
-        editPassword = layout.findViewById(R.id.userPassword);
-        editConfirmPassword = layout.findViewById(R.id.userRepeatPassword);
-        editPhone = layout.findViewById(R.id.userPhone);
-        rolSwitch = layout.findViewById(R.id.userRoleSwitch);
-        btnAcept = layout.findViewById(R.id.btnAceptUser);
-        btnCancel = layout.findViewById(R.id.btnCancelUser);
-
-/*        rolSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            rol = isChecked ? "9" : "1";
-        });*/
-
-    }
-
-
-    private void setUserData(User mUser) {
-        editName.setText(mUser.getName());
-        editLastName.setText(mUser.getLastName());
-        editPassword.setText(mUser.getPassword());
-        editConfirmPassword.setText(mUser.getPassword());
-        editPhone.setText(mUser.getPhone());
-        rolSwitch.setChecked(TextUtils.equals(mUser.getRole(), Constants.ADMIN_ROLE));
+        return mBinding.getRoot();
     }
 
     private boolean validation() {
 
-        String name = getValue(editName);
-        String lastName = getValue(editLastName);
-        String password = getValue(editPassword);
-        String passwordConfirm = getValue(editConfirmPassword);
-        String phone = getValue(editPhone);
+        String username = getValue(mBinding.userNameEdit);
+        String password = getValue(mBinding.userPassword);
+        String passwordConfirm = getValue(mBinding.userRepeatPassword);
+        String email = getValue(mBinding.userEmail);
 
         boolean validados = true;
 
-        if (name.isEmpty()) {
-            editName.setError("Campo obligatorio");
-            validados = false;
-        }
-
-        if (lastName.isEmpty()) {
-            editLastName.setError("Campo obligatorio");
+        if (username.isEmpty()) {
+            mBinding.userNameEdit.setError("Campo obligatorio");
             validados = false;
         }
 
         if (password.isEmpty()) {
-            editPassword.setError("Campo obligatorio");
+            mBinding.userPassword.setError("Campo obligatorio");
             validados = false;
         }
 
         if (!password.equals(passwordConfirm)) {
-            editConfirmPassword.setError("La contraseña no coincide");
+            mBinding.userRepeatPassword.setError("La contraseña no coincide");
             validados = false;
         }
 
-        if (phone.isEmpty()) {
-            editPhone.setError("La contraseña no coincide");
+        if (email.isEmpty()) {
+            mBinding.userEmail.setError("Campo obligatorio");
+            validados = false;
+        }
+
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            mBinding.userEmail.setError("Formato de correo incorrecto");
             validados = false;
         }
 

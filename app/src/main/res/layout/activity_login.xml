@@ -1,107 +1,208 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/topGuideline"
+        <import type="android.view.View" />
+
+        <variable
+            name="hasFingerPrintHardware"
+            type="boolean" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.3" />
+        android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/bottomGuideline"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.75" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/spinnerCardView"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="2dp"
-        app:cardElevation="6dp"
-        app:cardPreventCornerOverlap="false"
-        app:cardUseCompatPadding="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/topGuideline">
-
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/usersSpinner"
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/firstGuideline"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.15" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/secondGuideline"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.85" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/middleVerticalGuideline"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|center"
-            android:background="@color/white"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp" />
+            android:id="@+id/backgroundYellowLeft"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/custom_yellowbackground_login"
+            app:layout_constraintBottom_toTopOf="@+id/firstGuideline"
+            app:layout_constraintEnd_toStartOf="@+id/middleVerticalGuideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.cardview.widget.CardView>
+        <ImageView
+            android:id="@+id/backgroundYellowRight"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/secondary"
+            app:layout_constraintBottom_toTopOf="@+id/secondGuideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/middleVerticalGuideline"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/backgroundBlueLeft"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/primary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/middleVerticalGuideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/firstGuideline" />
+
+        <ImageView
+            android:id="@+id/backgroundBlueRight"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/custom_bluebackground_login"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/middleVerticalGuideline"
+            app:layout_constraintTop_toTopOf="@+id/secondGuideline" />
 
 
-    <!--    <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/usersSpinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/custom_background_login"
+            app:layout_constraintBottom_toTopOf="@+id/secondGuideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/topGuideline" />-->
+            app:layout_constraintTop_toTopOf="@+id/firstGuideline">
 
-    <EditText
-        android:id="@+id/passwordLogin"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:imeActionLabel="Ingresar"
-        android:imeOptions="actionGo"
-        android:maxLines="1"
-        android:inputType="textPassword"
-        android:textSize="25sp"
-        app:layout_constraintEnd_toEndOf="@+id/spinnerCardView"
-        app:layout_constraintStart_toStartOf="@+id/spinnerCardView"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCardView" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineLeft"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.10" />
 
-    <CheckBox
-        android:id="@+id/fingerPrintCheck"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Mantener sesion con huella"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/passwordLogin"
-        app:layout_constraintStart_toStartOf="@+id/passwordLogin"
-        app:layout_constraintTop_toBottomOf="@+id/passwordLogin" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineRight"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.90" />
 
-    <ImageView
-        android:id="@+id/btnFingerprint"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:src="@drawable/ic_baseline_fingerprint_24"
-        app:layout_constraintBottom_toBottomOf="@+id/btnLogin"
-        app:layout_constraintEnd_toEndOf="@+id/passwordLogin"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btnLogin"
-        app:layout_constraintTop_toTopOf="@+id/btnLogin" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineTop"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.15" />
 
-    <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ingresar"
-        app:layout_constraintBottom_toTopOf="@+id/bottomGuideline"
-        app:layout_constraintEnd_toStartOf="@+id/btnFingerprint"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="@+id/passwordLogin" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineBottom"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.85" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <EditText
+                android:id="@+id/usernameEdit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_person_login"
+                android:drawableLeft="@drawable/ic_person_login"
+                android:drawablePadding="5dp"
+                android:gravity="top|start"
+                android:hint="Username"
+                android:inputType="text"
+                android:lines="1"
+                android:maxLines="1"
+                android:paddingBottom="20dp"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
+                app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+                app:layout_constraintTop_toTopOf="@+id/guidelineTop" />
+
+            <EditText
+                android:id="@+id/passwordEdit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:imeOptions="actionGo"
+                android:drawableStart="@drawable/ic_lock_login"
+                android:drawableLeft="@drawable/ic_lock_login"
+                android:drawablePadding="5dp"
+                android:gravity="top|start"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:lines="1"
+                android:maxLines="1"
+                android:paddingBottom="20dp"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
+                app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+                app:layout_constraintTop_toBottomOf="@+id/usernameEdit" />
+
+
+            <ImageView
+                android:id="@+id/fingerPrintBtn"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/custom_circle_login"
+                android:visibility="@{hasFingerPrintHardware ? View.VISIBLE:View.GONE}"
+                app:layout_constraintBottom_toTopOf="@+id/loginBtn"
+                app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
+                app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+                app:layout_constraintTop_toBottomOf="@+id/passwordEdit" />
+
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_baseline_fingerprint_24"
+                app:layout_constraintBottom_toBottomOf="@+id/fingerPrintBtn"
+                app:layout_constraintEnd_toEndOf="@+id/fingerPrintBtn"
+                app:layout_constraintStart_toStartOf="@+id/fingerPrintBtn"
+                app:layout_constraintTop_toTopOf="@+id/fingerPrintBtn" />
+
+            <Button
+                android:id="@+id/loginBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/login_rounded_button"
+                android:padding="15dp"
+                android:text="Login"
+                android:textColor="@color/primary"
+                app:layout_constraintBottom_toTopOf="@+id/guidelineBottom"
+                app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
+                app:layout_constraintStart_toStartOf="@+id/guidelineLeft" />
+
+            <TextView
+                android:id="@+id/forgotPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Forgot your password?"
+                android:textColor="@color/gray_acent"
+                app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
+                app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+                app:layout_constraintTop_toTopOf="@+id/guidelineBottom" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -16,13 +16,12 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.easystock.R;
 import com.example.easystock.controllers.viewModel.UserViewModel;
 import com.example.easystock.databinding.ActivityUsersBinding;
-import com.example.easystock.interfaces.IUsersActivity;
 import com.example.easystock.models.User;
 import com.example.easystock.views.fragments.CrudUserFragment;
 import com.example.easystock.views.fragments.UserProfileFragment;
 import com.example.easystock.views.fragments.UsersFragment;
 
-public class UserActivity extends AppCompatActivity implements IUsersActivity {
+public class UserActivity extends AppCompatActivity implements UsersFragment.NotificableUsersFragment {
 
     public static final String USER_PROFILE = "USER_PROFILE";
     public static final String USERS = "USERS";
@@ -35,9 +34,11 @@ public class UserActivity extends AppCompatActivity implements IUsersActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_users);
+        mBinding.setLifecycleOwner(this);
 
         mUserViewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
+        mBinding.setIsNewUser(true);
         Intent intent = getIntent();
         Bundle bundle = new Bundle();
         Fragment fragment = null;
@@ -45,11 +46,13 @@ public class UserActivity extends AppCompatActivity implements IUsersActivity {
         if (intent.getExtras().getString(USERS) != null) {
             fragment = UsersFragment.newInstance();
             tag = getString(R.string.fragment_users);
+            mBinding.setIsNewUser(true);
         } else if (intent.getExtras().getString(USER_PROFILE) != null) {
             fragment = UserProfileFragment.newInstance();
             tag = getString(R.string.fragment_user_profile);
             User user = (User) intent.getExtras().getSerializable(USER_TO_UPDATE);
             bundle.putSerializable(UserProfileFragment.USER, user);
+            mBinding.setIsNewUser(false);
         }
         loadFragment(fragment, bundle, tag);
 
@@ -97,23 +100,27 @@ public class UserActivity extends AppCompatActivity implements IUsersActivity {
 
     @Override
     public void onBackPressed() {
-        if (loadedFragment() instanceof UsersFragment || loadedFragment() instanceof UserProfileFragment)
+        if (loadedFragment() instanceof UsersFragment || loadedFragment() instanceof UserProfileFragment) {
+            mBinding.setIsNewUser(true);
             clearStack();
+        }
         super.onBackPressed();
     }
 
     @Override
     public void updateUser(User user) {
-       CrudUserFragment crudFragment = CrudUserFragment.newInstance();
+        CrudUserFragment crudFragment = CrudUserFragment.newInstance();
         Bundle bundle = new Bundle();
         bundle.putSerializable(CrudUserFragment.USER, user);
         bundle.putString(CrudUserFragment.OPERATION, "UPDATE");
+        mBinding.setIsNewUser(false);
         loadFragment(crudFragment, bundle, getString(R.string.fragment_new_user));
     }
 
     @Override
     public void deleteUser(User user) {
-       if (!TextUtils.equals(String.valueOf(user.getId()), "1")) {
+        mBinding.setIsNewUser(true);
+        if (!TextUtils.equals(String.valueOf(user.getId()), "1")) {
             new AlertDialog.Builder(UserActivity.this)
                     .setIcon(R.drawable.ic_baseline_arrow_right_24)
                     .setTitle("Borrar usuario")

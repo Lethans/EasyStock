@@ -1,236 +1,212 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#fff"
-    android:clickable="true"
-    android:focusable="true">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineMidle"
-        android:layout_width="0.5dp"
+        <import type="com.example.easystock.models.User" />
+        <import type="android.view.View" />
+
+        <variable
+            name="isUpdatePassword"
+            type="boolean" />
+
+        <variable
+            name="user"
+            type="com.example.easystock.models.User" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineStart"
-        android:layout_width="0.5dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="15dp" />
-
-    <TextView
-        android:id="@+id/sellerName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Nombre"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/guidelineStart"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/sellerNameEdit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nombre"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/sellerName"
-        app:layout_constraintStart_toStartOf="@+id/guidelineMidle"
-        app:layout_constraintTop_toTopOf="@+id/sellerName" />
-
-    <TextView
-        android:id="@+id/sellerLastname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Apellido"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/guidelineStart"
-        app:layout_constraintTop_toBottomOf="@+id/sellerName" />
-
-    <TextView
-        android:id="@+id/sellerLastnameEdit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Apellido"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/sellerLastname"
-        app:layout_constraintStart_toStartOf="@+id/guidelineMidle"
-        app:layout_constraintTop_toTopOf="@+id/sellerLastname" />
+        android:background="#fff"
+        android:clickable="true"
+        android:focusable="true">
 
 
-    <!--<TextView
-        android:id="@+id/sellerNewPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Nueva contraseña"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/guidelineStart"
-        app:layout_constraintTop_toBottomOf="@+id/sellerLastname" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineMidle"
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
 
-    <EditText
-        android:id="@+id/sellerNewPasswordEdit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nueva contraseña"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/sellerNewPassword"
-        app:layout_constraintStart_toStartOf="@+id/guidelineMidle"
-        app:layout_constraintTop_toTopOf="@+id/sellerNewPassword" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineStart"
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="15dp" />
 
-    <TextView
-        android:id="@+id/sellerConfirmPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Confirmar contraseña"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/guidelineStart"
-        app:layout_constraintTop_toBottomOf="@+id/sellerNewPassword" />
-
-    <EditText
-        android:id="@+id/sellerConfirmPasswordEdit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Confirme contraseña"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/sellerConfirmPassword"
-        app:layout_constraintStart_toStartOf="@+id/guidelineMidle"
-        app:layout_constraintTop_toTopOf="@+id/sellerConfirmPassword" />-->
-
-    <TextView
-        android:id="@+id/sellerPhone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Telefono"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/guidelineStart"
-        app:layout_constraintTop_toBottomOf="@+id/sellerLastname" />
-
-    <TextView
-        android:id="@+id/sellerPhoneEdit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Telefono"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/sellerPhone"
-        app:layout_constraintStart_toStartOf="@+id/guidelineMidle"
-        app:layout_constraintTop_toTopOf="@+id/sellerPhone" />
-
-
-    <Button
-        android:id="@+id/cancelUserProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="Salir"
-        app:layout_constraintEnd_toStartOf="@+id/guidelineMidle"
-        app:layout_constraintStart_toStartOf="@+id/guidelineStart"
-        app:layout_constraintTop_toBottomOf="@+id/sellerPhone" />
-
-    <Button
-        android:id="@+id/updatePassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Modificar Contraseña"
-        app:layout_constraintStart_toStartOf="@+id/cancelUserProfile"
-        app:layout_constraintTop_toBottomOf="@+id/cancelUserProfile" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/changePasswordConstraint"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guidelineStart"
-        app:layout_constraintTop_toBottomOf="@+id/updatePassword">
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/oldPassword_text_input_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:counterTextAppearance="@android:color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <EditText
-                android:id="@+id/oldPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#00000000"
-                android:hint="Ingrese su antigua contraseña"
-                android:lines="1"
-                android:maxLines="1"
-                android:textSize="20sp" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/newPassword_text_input_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:counterTextAppearance="@android:color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/oldPassword_text_input_layout"
-            app:passwordToggleEnabled="true">
-
-            <EditText
-                android:id="@+id/newPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#00000000"
-                android:hint="Nueva contraseña"
-                android:lines="1"
-                android:maxLines="1"
-                android:textSize="20sp" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/newConfirmPassword_text_input_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:counterTextAppearance="@android:color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/newPassword_text_input_layout"
-            app:passwordToggleEnabled="true">
-
-            <EditText
-                android:id="@+id/newConfirmPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#00000000"
-                android:hint="Confirme contraseña"
-                android:lines="1"
-                android:maxLines="1"
-                android:textSize="20sp" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Button
-            android:id="@+id/updateProfilePassword"
+        <TextView
+            android:id="@+id/sellerName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="Modificar"
+            android:text="Nombre"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/sellerNameEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{user.name}"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/sellerName"
+            app:layout_constraintStart_toStartOf="@+id/guidelineMidle"
+            app:layout_constraintTop_toTopOf="@+id/sellerName" />
+
+        <TextView
+            android:id="@+id/sellerLastname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Apellido"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@+id/sellerName" />
+
+        <TextView
+            android:id="@+id/sellerLastnameEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{user.lastName}"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/sellerLastname"
+            app:layout_constraintStart_toStartOf="@+id/guidelineMidle"
+            app:layout_constraintTop_toTopOf="@+id/sellerLastname" />
+
+        <TextView
+            android:id="@+id/sellerPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Telefono"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@+id/sellerLastname" />
+
+        <TextView
+            android:id="@+id/sellerPhoneEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{user.phone}"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/sellerPhone"
+            app:layout_constraintStart_toStartOf="@+id/guidelineMidle"
+            app:layout_constraintTop_toTopOf="@+id/sellerPhone" />
+
+
+        <Button
+            android:id="@+id/cancelUserProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="Salir"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineMidle"
+            app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@+id/sellerPhone" />
+
+        <Button
+            android:id="@+id/btnVisibilityUpdatePassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Modificar Contraseña"
+            app:layout_constraintStart_toStartOf="@+id/cancelUserProfile"
+            app:layout_constraintTop_toBottomOf="@+id/cancelUserProfile" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/changePasswordConstraint"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:visibility="@{isUpdatePassword ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/newConfirmPassword_text_input_layout" />
+            app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@+id/btnVisibilityUpdatePassword">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/oldPassword_text_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:counterTextAppearance="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <EditText
+                    android:id="@+id/oldPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#00000000"
+                    android:hint="Ingrese su antigua contraseña"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:textSize="20sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/newPassword_text_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:counterTextAppearance="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/oldPassword_text_input_layout"
+                app:passwordToggleEnabled="true">
+
+                <EditText
+                    android:id="@+id/newPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#00000000"
+                    android:hint="Nueva contraseña"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:textSize="20sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/newConfirmPassword_text_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:counterTextAppearance="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/newPassword_text_input_layout"
+                app:passwordToggleEnabled="true">
+
+                <EditText
+                    android:id="@+id/newConfirmPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#00000000"
+                    android:hint="Confirme contraseña"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:textSize="20sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btnUpdateProfilePassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Modificar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/newConfirmPassword_text_input_layout" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

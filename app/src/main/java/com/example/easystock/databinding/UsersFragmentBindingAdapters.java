@@ -11,6 +11,8 @@ import java.util.List;
 
 public class UsersFragmentBindingAdapters {
 
+    //databinding recycler adapter.
+
     @BindingAdapter("usersList")
     public static void setUsersList(RecyclerView view, List<User> users) {
         if (users == null) {
@@ -23,7 +25,7 @@ public class UsersFragmentBindingAdapters {
         UserAdapter adapter = (UserAdapter) view.getAdapter();
 
         if (adapter == null) {
-            adapter = new UserAdapter(view.getContext(), users);
+            //adapter = new UserAdapter(view.getContext(), users);
             view.setAdapter(adapter);
         }
     }

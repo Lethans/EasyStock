@@ -8,8 +8,8 @@
             type="com.example.easystock.models.User" />
 
         <variable
-            name="IUsersActivity"
-            type="com.example.easystock.interfaces.IUsersActivity" />
+            name="callback"
+            type="com.example.easystock.views.fragments.UsersFragment.NotificableUsersFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -45,7 +45,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="2dp"
-
                 android:text="Share"
                 android:textColor="#ffffff" />
         </LinearLayout>
@@ -56,7 +55,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:onClick="@{() -> IUsersActivity.updateUser(user)}"
+            android:onClick="@{() -> callback.updateUser(user)}"
             android:orientation="vertical"
             app:layout_constraintEnd_toStartOf="@+id/userDeleteLayout"
             app:layout_constraintStart_toEndOf="@+id/linearLayout">
@@ -85,7 +84,7 @@
             android:layout_marginRight="30dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:onClick="@{() -> IUsersActivity.deleteUser(user)}"
+            android:onClick="@{() -> callback.deleteUser(user)}"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/userEditLayout">

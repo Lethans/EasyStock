@@ -14,4 +14,14 @@ Place your fingertip on the Home button to verify your identity
     <string name="fragment_users">Users</string>
     <string name="fragment_user_profile">User_Profile</string>
     <string name="fragment_new_user">Crud_User</string>
+
+    <!--Roles-->
+    <string name="admin">9</string>
+    <string name="seller">1</string>
+
+
+    <string name="acept">Aceptar</string>
+    <string name="update">Modificar</string>
+
+
 </resources>

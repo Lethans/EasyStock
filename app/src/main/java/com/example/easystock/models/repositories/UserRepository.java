@@ -5,7 +5,8 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.easystock.listeners.GetUserFingerprintListener;
+import com.example.easystock.listeners.GetUserListener;
+import com.example.easystock.listeners.GetUsersCountListener;
 import com.example.easystock.models.User;
 import com.example.easystock.models.dao.UserDao;
 import com.example.easystock.models.db.AppDatabase;
@@ -32,9 +33,9 @@ public class UserRepository {
         return mUserDao.getUserLogged();
     }
 
-    public LiveData<User> getUserFingerPrint() {
+    /*public LiveData<User> getUserFingerPrint() {
         return mUserDao.getUserFingerPrint();
-    }
+    }*/
 
     public void insertUser(User user) {
         new insertAsyncTask(mUserDao).execute(user);
@@ -52,12 +53,20 @@ public class UserRepository {
         new deleteUserAsyncTask(mUserDao).execute(user);
     }
 
-    public void updateUsersLogged(User user, int idUserLogged) {
-        new UpdateUsersLoggedAsyncTask(mUserDao, user, idUserLogged).execute();
+    public void updateUsersLogged(User user) {
+        new UpdateUsersLoggedAsyncTask(mUserDao, user).execute();
     }
 
-    public void getUserWithFingerprint(GetUserFingerprintListener listener) {
-        new SelectUsersFingerPrintAsyncTask(mUserDao, listener).execute();
+    public void getLoginUser(String username, String password, GetUserListener listener) {
+        new LoginUserAsyncTask(mUserDao, username, password, listener).execute();
+    }
+
+    public void getUsersCount(GetUsersCountListener listener) {
+        new GetUsersCountAsyncTask(mUserDao, listener).execute();
+    }
+
+    public void getUserFingerprint(String androidId, GetUserListener listener) {
+        new GetUserFingerPrintAsyncTask(mUserDao, androidId, listener).execute();
     }
 
     private static class insertAsyncTask extends AsyncTask<User, Void, Void> {
@@ -124,35 +133,34 @@ public class UserRepository {
 
         private UserDao mAsyncTaskDao;
         private User mUser;
-        private int mUserLoggedId;
 
-        public UpdateUsersLoggedAsyncTask(UserDao dao, User user, int userLoggedId) {
+        public UpdateUsersLoggedAsyncTask(UserDao dao, User user) {
             mAsyncTaskDao = dao;
             mUser = user;
-            mUserLoggedId = userLoggedId;
         }
 
         @Override
         protected Void doInBackground(User... voids) {
-            mAsyncTaskDao.updateUsersLogged(mUser, mUserLoggedId);
+            mAsyncTaskDao.updateUsersLogged(mUser);
             return null;
         }
     }
 
-    private static class SelectUsersFingerPrintAsyncTask extends AsyncTask<Void, Void, User> {
+    private static class GetUserFingerPrintAsyncTask extends AsyncTask<Void, Void, User> {
 
         private UserDao mAsyncTaskDao;
-        private GetUserFingerprintListener mListener;
+        private GetUserListener mListener;
+        private String mAndroidId;
 
-        public SelectUsersFingerPrintAsyncTask(UserDao dao, GetUserFingerprintListener listener) {
-            mAsyncTaskDao = dao;
-            mListener = listener;
+        public GetUserFingerPrintAsyncTask(UserDao dao, String androidId, GetUserListener listener) {
+            this.mAsyncTaskDao = dao;
+            this.mAndroidId = androidId;
+            this.mListener = listener;
         }
 
         @Override
         protected User doInBackground(Void... voids) {
-            return  mAsyncTaskDao.getUserWithFingerprint();
-            //return null;
+            return mAsyncTaskDao.getUserFingerprint(mAndroidId);
         }
 
         @Override
@@ -161,8 +169,67 @@ public class UserRepository {
             if (user != null)
                 mListener.onGetUser(user);
             else
-                mListener.onNotGetUser("Ingrese su cuenta manual y vuelva a seleccionar Mantener sesión");
+                mListener.onNotGetUser("La primera vez debe loguearse manualmente");
         }
     }
+
+    private static class LoginUserAsyncTask extends AsyncTask<Void, Void, User> {
+
+        private UserDao mAsyncTaskDao;
+        private GetUserListener mListener;
+        private String mUsername;
+        private String mPassword;
+
+        public LoginUserAsyncTask(UserDao dao, String username, String password, GetUserListener listener) {
+            this.mAsyncTaskDao = dao;
+            this.mUsername = username;
+            this.mPassword = password;
+            this.mListener = listener;
+        }
+
+        @Override
+        protected User doInBackground(Void... voids) {
+            return mAsyncTaskDao.loginUser(mUsername, mPassword);
+        }
+
+        @Override
+        protected void onPostExecute(User user) {
+            super.onPostExecute(user);
+            if (user != null)
+                mListener.onGetUser(user);
+            else
+                mListener.onNotGetUser("Usuario Inexistente");
+            //mListener.onNotGetUser("Ingrese su cuenta manual y vuelva a seleccionar Mantener sesión");
+        }
+    }
+
+    public class GetUsersCountAsyncTask extends AsyncTask<Void, Void, Integer> {
+
+        private UserDao mAsyncTaskDao;
+        private GetUsersCountListener mListener;
+
+        public GetUsersCountAsyncTask(UserDao dao, GetUsersCountListener listener) {
+            this.mAsyncTaskDao = dao;
+            this.mListener = listener;
+        }
+
+        @Override
+        protected Integer doInBackground(Void... voids) {
+
+            return mAsyncTaskDao.getUsersCount();
+        }
+
+        @Override
+        synchronized protected void onPostExecute(Integer isAnyReceived) {
+            super.onPostExecute(isAnyReceived);
+
+            if (isAnyReceived != 0) {
+                mListener.onExistUsers();
+            } else {
+                mListener.onEmptyUsers();
+            }
+        }
+    }
+
 
 }

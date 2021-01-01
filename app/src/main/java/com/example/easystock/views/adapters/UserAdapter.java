@@ -14,6 +14,7 @@ import com.example.easystock.databinding.UserItemBinding;
 import com.example.easystock.databinding.UserItemMenuBinding;
 import com.example.easystock.interfaces.IUsersActivity;
 import com.example.easystock.models.User;
+import com.example.easystock.views.fragments.UsersFragment;
 
 import java.util.List;
 
@@ -23,10 +24,11 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<User> userList;
     private final int SHOW_MENU = 1;
     private final int HIDE_MENU = 2;
+    private UsersFragment.NotificableUsersFragment mListener;
 
-    public UserAdapter(Context context, List<User> userList) {
+    public UserAdapter(Context context, UsersFragment.NotificableUsersFragment listener) {
         this.mContext = context;
-        this.userList = userList;
+        this.mListener = listener;
         notifyDataSetChanged();
     }
 
@@ -61,7 +63,7 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
         if (holder instanceof BindingHolderMenu) {
             ((BindingHolderMenu) holder).mBinding.setUser(user);
-            ((BindingHolderMenu) holder).mBinding.setIUsersActivity((IUsersActivity) mContext);
+            ((BindingHolderMenu) holder).mBinding.setCallback(mListener);
         }
     }
 
@@ -70,10 +72,11 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return (userList == null) ? 0 : userList.size();
     }
 
-/*    public void setUserList(List<User> userList) {
+    public void setUserList(List<User> userList) {
         this.userList = userList;
+        closeMenu();
         notifyDataSetChanged();
-    }*/
+    }
 
 
     public void showMenu(int position) {
@@ -123,5 +126,12 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             super(view);
             mBinding = DataBindingUtil.bind(view);
         }
+    }
+
+    public interface NotificableRecyclerUsers {
+
+        void updateUser(User user);
+
+        void deleteUser(User user);
     }
 }

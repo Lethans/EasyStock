@@ -10,8 +10,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.easystock.R;
@@ -68,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         btnUser.setOnClickListener(v -> {
-            if (TextUtils.equals(role, Constants.ADMIN_ROLE)) {
+            if (TextUtils.equals(role, Constants.ROLE_ADMIN)) {
                 Intent intent1 = new Intent(MainActivity.this, UserActivity.class);
                 intent1.putExtra(UserActivity.USERS, "ALL_USERS");
                 startActivity(intent1);
@@ -80,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         btnTwo.setOnClickListener(v -> {
-            if (TextUtils.equals(role, Constants.ADMIN_ROLE)) {
+            if (TextUtils.equals(role, Constants.ROLE_ADMIN)) {
                 Intent intent1 = new Intent(MainActivity.this, StockActivity.class);
                 startActivity(intent1);
             } else {
