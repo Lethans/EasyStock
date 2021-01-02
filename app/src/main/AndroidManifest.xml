@@ -17,14 +17,18 @@
         android:roundIcon="@drawable/stock_icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.EasyStock">
-
+        <activity
+            android:name=".views.activities.RecoveryPasswordActivity"
+            android:label="@string/title_activity_recovery_password"
+            android:theme="@style/Theme.EasyStock.NoActionBar"></activity>
         <!-- Agregar para fotos producto -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
-            <!--android:authorities="com.example.fileprovider"-->
+
+            <!-- android:authorities="com.example.fileprovider" -->
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />

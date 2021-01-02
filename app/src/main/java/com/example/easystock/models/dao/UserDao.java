@@ -36,6 +36,9 @@ public interface UserDao {
     /*@Query("UPDATE user SET fingerprint = 'NO' WHERE id NOT IN (SELECT id FROM user WHERE id = :id)")
     void setUserFinger(int id);*/
 
+    @Query("SELECT * FROM user WHERE email=:email")
+    User getExistingUserEmail(String email);
+
     @Query("SELECT * FROM user WHERE androidIdFingerprint=:androidId ")
     User getUserFingerprint(String androidId);
 

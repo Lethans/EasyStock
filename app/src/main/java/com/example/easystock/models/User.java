@@ -22,6 +22,7 @@ public class User implements Serializable {
     private boolean isLogged;
     private boolean sync;
     private String androidIdFingerprint;
+    private String recoveryPasswordNumber;
     private boolean isShowMenu;
 
     @Ignore
@@ -38,6 +39,7 @@ public class User implements Serializable {
         this.androidIdFingerprint = "";
         this.sync = false;
         this.isShowMenu = false;
+        this.recoveryPasswordNumber = "";
     }
 
     @Ignore
@@ -53,6 +55,7 @@ public class User implements Serializable {
         this.androidIdFingerprint = "";
         this.sync = false;
         this.isShowMenu = false;
+        this.recoveryPasswordNumber = "";
     }
 
     public User() {
@@ -60,6 +63,7 @@ public class User implements Serializable {
         this.androidIdFingerprint = "";
         this.sync = false;
         this.isShowMenu = false;
+        this.recoveryPasswordNumber = "";
     }
 
     public int getId() {
@@ -156,5 +160,13 @@ public class User implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getRecoveryPasswordNumber() {
+        return recoveryPasswordNumber;
+    }
+
+    public void setRecoveryPasswordNumber(String recoveryPasswordNumber) {
+        this.recoveryPasswordNumber = recoveryPasswordNumber;
     }
 }

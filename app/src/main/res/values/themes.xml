@@ -19,5 +19,9 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="Theme.EasyStock.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.EasyStock.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 
 </resources>

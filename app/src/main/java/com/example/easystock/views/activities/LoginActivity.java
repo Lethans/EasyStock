@@ -1,28 +1,20 @@
 package com.example.easystock.views.activities;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.hardware.biometrics.BiometricPrompt;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.provider.Settings;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.CheckBox;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricManager;
-import androidx.core.app.ActivityCompat;
-import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -32,13 +24,15 @@ import com.example.easystock.databinding.ActivityLoginBinding;
 import com.example.easystock.listeners.GetUserListener;
 import com.example.easystock.listeners.GetUsersCountListener;
 import com.example.easystock.models.User;
+import com.example.easystock.controllers.emailSender.GMailSender;
+import com.example.easystock.views.fragments.SendEmailRecoveryFragment;
+import com.google.firebase.auth.FirebaseAuth;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.M)
@@ -48,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     private String androidId = "";
     public static final int BIOMETRIC_SUCCESS = 0;
     private ActivityLoginBinding mBinding;
+    private FirebaseAuth mAuth;
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
@@ -55,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         mBinding.setLifecycleOwner(this);
+        mAuth = FirebaseAuth.getInstance();
 
         mUserViewModel = new ViewModelProvider(LoginActivity.this).get(UserViewModel.class);
         try {
@@ -137,9 +133,8 @@ public class LoginActivity extends AppCompatActivity {
         mBinding.loginBtn.setOnClickListener(v -> searchUser());
 
         mBinding.forgotPassword.setOnClickListener(v -> {
-            //fixme aca tendria que salir el dialogo donde me pida el usuario,con el usuario meto una query para traerlo de la db y con eso mando el correo y la contraseña
-            //fixme tambien cuando traigo el correo tengo que poner el correo con los *** y que muestre solamente una parte de la direccion
-            sendEmail();
+            new SendEmailRecoveryFragment().show(getSupportFragmentManager());
+            mBinding.forgotPassword.setClickable(false);
         });
 
     }
@@ -231,53 +226,10 @@ public class LoginActivity extends AppCompatActivity {
         return cancellationSignal;
     }
 
-
-    /*private void setObservers() {
-        mUserViewModel.getAllUsers().observe(this, users -> {
-            if (users != null) {
-                //fixme Revisar usuarios de firebase 09-11
-                if (users.size() != 0)
-                    userList = users;
-                else
-                    createAdmin();
-
-                mAdapter = new LoginAdapter(LoginActivity.this, R.layout.item_spinner_login, userList);
-                mSpinner.setAdapter(mAdapter);
-            }
-        });
-    }*/
-
     private void createAdmin() {
         User user = new User(1, "ADMIN", "ADMIN", "ADMIN", "1234", "demian_1705@hotmail.com", "1111111111", "9");
         mUserViewModel.insertUser(user);
     }
 
-    protected void sendEmail() {
-        Log.i("Send email", "");
-
-        //Fixme esto es una vez que termine de hacer la query para traer el usuario.
-        String[] TO = {"demian_1705@hotmail.com"};
-        //String[] CC = {"mcmohd@gmail.com"};
-        Intent emailIntent = new Intent(Intent.ACTION_SEND);
-        emailIntent.setData(Uri.parse("mailto:"));
-        emailIntent.setType("text/plain");
-
-
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
-        //emailIntent.putExtra(Intent.EXTRA_CC, CC);
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Recuperar contraseña EasyStock");
-        emailIntent.putExtra(Intent.EXTRA_TEXT, "Te olvidaste la contraseña, aca te la vuelvo a enviar papa, si el correo te llego por error, por favor desestimarlo");
-
-        try {
-            emailIntent.setPackage("com.whatsapp");
-            this.startActivity(emailIntent);
-            //startActivity(Intent.createChooser(emailIntent, "Send mail..."));
-            //finish();
-            Log.i("Finished sending", "");
-        } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(LoginActivity.this,
-                    "There is no email client installed.", Toast.LENGTH_SHORT).show();
-        }
-    }
 
 }

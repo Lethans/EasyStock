@@ -60,9 +60,6 @@ public class CrudUserFragment extends Fragment {
             fragmentManager.popBackStack();
         });
 
-        //FIXME ACA EL ANDROID ID PARA CUANDO CREAR EL USUARIO Y LOGUEARLE LA PRIMERA VEZ
-        //String androidId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
-
         mBinding.btnAceptUser.setOnClickListener(v -> {
             if (validation()) {
                 if (mBinding.getIsUpdated()) {

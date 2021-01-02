@@ -6,7 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.example.easystock.listeners.GetExistingUserEmailListener;
 import com.example.easystock.listeners.GetUserListener;
+import com.example.easystock.listeners.GetUserPasswordListener;
 import com.example.easystock.listeners.GetUsersCountListener;
 import com.example.easystock.models.User;
 import com.example.easystock.models.repositories.UserRepository;
@@ -65,5 +67,9 @@ public class UserViewModel extends AndroidViewModel {
 
     public void getUsersCount(GetUsersCountListener listener) {
         mUserRepository.getUsersCount(listener);
+    }
+
+    public void getExistingUserEmail(String email, GetExistingUserEmailListener listener) {
+        mUserRepository.getExistingUserEmail(email, listener);
     }
 }

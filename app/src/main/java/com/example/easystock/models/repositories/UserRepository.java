@@ -1,10 +1,12 @@
 package com.example.easystock.models.repositories;
 
 import android.app.Application;
+import android.content.Context;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
+import com.example.easystock.listeners.GetExistingUserEmailListener;
 import com.example.easystock.listeners.GetUserListener;
 import com.example.easystock.listeners.GetUsersCountListener;
 import com.example.easystock.models.User;
@@ -23,6 +25,11 @@ public class UserRepository {
         AppDatabase db = AppDatabase.getDatabase(application);
         mUserDao = db.mUserDao();
         mAllUsers = mUserDao.getAllUsers();
+    }
+
+    public UserRepository(Context ctx) {
+        AppDatabase db = AppDatabase.getDatabase(ctx);
+        mUserDao = db.mUserDao();
     }
 
     public LiveData<List<User>> getAllUsers() {
@@ -67,6 +74,10 @@ public class UserRepository {
 
     public void getUserFingerprint(String androidId, GetUserListener listener) {
         new GetUserFingerPrintAsyncTask(mUserDao, androidId, listener).execute();
+    }
+
+    public void getExistingUserEmail(String email, GetExistingUserEmailListener listener) {
+        new GetExistingUserEmail(mUserDao, email, listener).execute();
     }
 
     private static class insertAsyncTask extends AsyncTask<User, Void, Void> {
@@ -143,6 +154,33 @@ public class UserRepository {
         protected Void doInBackground(User... voids) {
             mAsyncTaskDao.updateUsersLogged(mUser);
             return null;
+        }
+    }
+
+    private static class GetExistingUserEmail extends AsyncTask<Void, Void, User> {
+
+        private UserDao mAsyncTaskDao;
+        private GetExistingUserEmailListener mListener;
+        private String mEmail;
+
+        public GetExistingUserEmail(UserDao dao, String email, GetExistingUserEmailListener listener) {
+            this.mAsyncTaskDao = dao;
+            this.mEmail = email;
+            this.mListener = listener;
+        }
+
+        @Override
+        protected User doInBackground(Void... voids) {
+            return mAsyncTaskDao.getExistingUserEmail(mEmail);
+        }
+
+        @Override
+        protected void onPostExecute(User user) {
+            super.onPostExecute(user);
+            if (user != null)
+                mListener.onValidEmail(user);
+            else
+                mListener.onInvalidEmail();
         }
     }
 

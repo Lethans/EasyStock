@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "193096582351",
+    "project_id": "easystock-3a23e",
+    "storage_bucket": "easystock-3a23e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:193096582351:android:140f3770e586e9a966e3ba",
+        "android_client_info": {
+          "package_name": "com.example.easystock"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "193096582351-cb33klhgmkedpuh2cug1837l8p6qep23.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFXxorLd0640hxZZn6UgvwNj1Jgdi8M4c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "193096582351-cb33klhgmkedpuh2cug1837l8p6qep23.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
