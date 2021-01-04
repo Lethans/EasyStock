@@ -42,7 +42,6 @@ public class LoginActivity extends AppCompatActivity {
     private String androidId = "";
     public static final int BIOMETRIC_SUCCESS = 0;
     private ActivityLoginBinding mBinding;
-    private FirebaseAuth mAuth;
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
@@ -50,7 +49,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         mBinding.setLifecycleOwner(this);
-        mAuth = FirebaseAuth.getInstance();
 
         mUserViewModel = new ViewModelProvider(LoginActivity.this).get(UserViewModel.class);
         try {
@@ -132,10 +130,7 @@ public class LoginActivity extends AppCompatActivity {
 
         mBinding.loginBtn.setOnClickListener(v -> searchUser());
 
-        mBinding.forgotPassword.setOnClickListener(v -> {
-            new SendEmailRecoveryFragment().show(getSupportFragmentManager());
-            mBinding.forgotPassword.setClickable(false);
-        });
+        mBinding.forgotPassword.setOnClickListener(v -> new SendEmailRecoveryFragment().show(getSupportFragmentManager()));
 
     }
 
