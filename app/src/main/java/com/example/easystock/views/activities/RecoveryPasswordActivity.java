@@ -71,6 +71,7 @@ public class RecoveryPasswordActivity extends AppCompatActivity {
             if (TextUtils.equals(mBinding.newresetpassword.getText().toString().trim(), mBinding.newConfirmResetpassword.getText().toString().trim())) {
                 recoveryPasswordUser.setPassword(mBinding.newresetpassword.getText().toString().trim());
                 mUserViewModel.updateUser(recoveryPasswordUser);
+                Toast.makeText(this, "Contraseña actualizada con exito", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(this, LoginActivity.class));
             }
         });

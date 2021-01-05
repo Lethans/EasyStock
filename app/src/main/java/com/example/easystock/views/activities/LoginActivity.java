@@ -166,6 +166,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onNotGetUser(String msj) {
+                        //fixme ver mas adelante para en caso de error, si es por contraseña o por usuario inexistente
                         Toast.makeText(LoginActivity.this, msj, Toast.LENGTH_SHORT).show();
                     }
                 });

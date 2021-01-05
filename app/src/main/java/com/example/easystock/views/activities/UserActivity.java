@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,36 +34,43 @@ public class UserActivity extends AppCompatActivity implements UsersFragment.Not
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_users);
-        mBinding.setLifecycleOwner(this);
 
-        mUserViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        try {
+            mBinding = DataBindingUtil.setContentView(this, R.layout.activity_users);
+            mBinding.setLifecycleOwner(this);
 
-        mBinding.setIsNewUser(true);
-        Intent intent = getIntent();
-        Bundle bundle = new Bundle();
-        Fragment fragment = null;
-        String tag = null;
-        if (intent.getExtras().getString(USERS) != null) {
-            fragment = UsersFragment.newInstance();
-            tag = getString(R.string.fragment_users);
+            mUserViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+
             mBinding.setIsNewUser(true);
-        } else if (intent.getExtras().getString(USER_PROFILE) != null) {
-            fragment = UserProfileFragment.newInstance();
-            tag = getString(R.string.fragment_user_profile);
-            User user = (User) intent.getExtras().getSerializable(USER_TO_UPDATE);
-            bundle.putSerializable(UserProfileFragment.USER, user);
-            mBinding.setIsNewUser(false);
-        }
-        loadFragment(fragment, bundle, tag);
-
-
-        mBinding.addUserBtn.setOnClickListener(v -> {
-            if (!(loadedFragment() instanceof CrudUserFragment)) {
-                CrudUserFragment crudFragment = CrudUserFragment.newInstance();
-                loadFragment(crudFragment, null, getString(R.string.fragment_new_user));
+            Intent intent = getIntent();
+            Bundle bundle = new Bundle();
+            Fragment fragment = null;
+            String tag = null;
+            if (intent.getExtras().getString(USERS) != null) {
+                fragment = UsersFragment.newInstance();
+                tag = getString(R.string.fragment_users);
+                mBinding.setIsNewUser(true);
+            } else if (intent.getExtras().getString(USER_PROFILE) != null) {
+                fragment = UserProfileFragment.newInstance();
+                tag = getString(R.string.fragment_user_profile);
+                User user = (User) intent.getExtras().getSerializable(USER_TO_UPDATE);
+                bundle.putSerializable(UserProfileFragment.USER, user);
+                mBinding.setIsNewUser(false);
             }
-        });
+            loadFragment(fragment, bundle, tag);
+
+
+            mBinding.addUserBtn.setOnClickListener(v -> {
+                if (!(loadedFragment() instanceof CrudUserFragment)) {
+                    CrudUserFragment crudFragment = CrudUserFragment.newInstance();
+                    loadFragment(crudFragment, null, getString(R.string.fragment_new_user));
+                }
+            });
+        } catch (Exception e) {
+            Log.e("TAG", "onCreateView", e);
+            e.printStackTrace();
+            throw e;
+        }
 
 
     }

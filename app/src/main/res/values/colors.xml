@@ -4,6 +4,7 @@
     <color name="primary">#20303f</color>
     <color name="primary_second">#21222d</color>
     <color name="secondary">#fcca57</color>
+    <color name="secondary_second">#e69023</color>
     <color name="gray">#C8C8C8</color>
     <color name="gray_acent">#757575</color>
     <color name="green_confirm">#1abc9c</color>

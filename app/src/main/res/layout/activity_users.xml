@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:backgroundTint="@color/design_default_color_primary"
+            android:backgroundTint="@color/primary_second"
             android:visibility="@{isNewUser ? View.VISIBLE:View.GONE}"
             app:fabCradleRoundedCornerRadius="5dp" />
 
@@ -36,7 +36,7 @@
             android:id="@+id/addUserBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/biometric_error_color"
+            android:backgroundTint="@color/secondary_second"
             android:src="@drawable/ic_baseline_add_24"
             android:visibility="@{isNewUser ? View.VISIBLE:View.GONE}"
             app:borderWidth="0dp"

@@ -68,10 +68,10 @@ public class SendEmailRecoveryFragment extends DialogFragment {
                     public void onValidEmail(User user) {
                         Random random = new Random();
                         @SuppressLint("DefaultLocale") String recoveryNumber = String.format("%04d", random.nextInt(10000));
-                        user.setRecoveryPasswordNumber(recoveryNumber);
+                        //user.setRecoveryPasswordNumber(recoveryNumber);
                         //mUserViewModel.updateUser(user);
-                        UserRepository userRepository = new UserRepository(getActivity());
-                        userRepository.updateUser(user);
+                        //UserRepository userRepository = new UserRepository(getActivity());
+                        //userRepository.updateUser(user);
                         sendEmail(email, recoveryNumber);
                         Intent intent = new Intent(getContext(), RecoveryPasswordActivity.class);
                         intent.putExtra(RecoveryPasswordActivity.RECOVERY_NUMBER, recoveryNumber);
@@ -82,7 +82,7 @@ public class SendEmailRecoveryFragment extends DialogFragment {
 
                     @Override
                     public void onInvalidEmail() {
-                        Toast.makeText(getContext(), "No existe el correo ingresado", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Correo inexistente", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -127,11 +127,22 @@ public class SendEmailRecoveryFragment extends DialogFragment {
     }
 
     protected void sendEmail(String userEmail, String recoveryNumber) {
+        String messege = "Hola,\n" +
+                "\n" +
+                "Ingresa el siguiente código en la aplicación para cambiar tu contraseña.\n" +
+                "\n" +
+                "Código de recuperación: " + recoveryNumber + "\n" +
+                "\n" +
+                "Si no pediste recordar tu contraseña, podes ignorar este email.\n" +
+                "\n" +
+                "Muchas gracias,\n" +
+                "\n" +
+                "El equipo de EasyStock.";
         new Thread(() -> {
             try {
                 GMailSender sender = new GMailSender(getResources().getString(R.string.senderName),
                         getResources().getString(R.string.senderSecret));
-                sender.sendMail("Recupera tu contraseña numero", "Ingresa este numero en la aplicacion para generar una nueva clave: " + recoveryNumber,
+                sender.sendMail("EasyStock- Recuperar Contraseña", messege,
                         getResources().getString(R.string.senderName), userEmail);
             } catch (Exception e) {
                 Log.e("SendMail", e.getMessage(), e);
@@ -146,7 +157,7 @@ public class SendEmailRecoveryFragment extends DialogFragment {
         Point size = new Point();
         Display display = window.getWindowManager().getDefaultDisplay();
         display.getSize(size);
-        window.setLayout((int) (size.x * 0.80), (int) (size.y * 0.45));
+        window.setLayout((int) (size.x * 0.85), (int) (size.y * 0.45));
         window.setGravity(Gravity.CENTER);
     }
 

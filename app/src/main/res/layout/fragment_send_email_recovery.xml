@@ -72,7 +72,7 @@
                     android:id="@+id/recoveryEmail_text_input_layout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
+                    android:padding="5dp"
                     app:endIconMode="clear_text"
                     app:layout_constraintBottom_toTopOf="@+id/guidelineHorizontal"
                     app:layout_constraintEnd_toEndOf="parent"
