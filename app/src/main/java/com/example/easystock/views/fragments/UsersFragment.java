@@ -58,7 +58,7 @@ public class UsersFragment extends Fragment {
 
     private void setRecyclerSwipe() {
         ItemTouchHelper.SimpleCallback touchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-            private final ColorDrawable background = new ColorDrawable(getResources().getColor(R.color.purple_200));
+            private final ColorDrawable background = new ColorDrawable(getResources().getColor(R.color.white));
 
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {

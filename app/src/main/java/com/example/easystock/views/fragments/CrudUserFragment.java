@@ -1,24 +1,18 @@
 package com.example.easystock.views.fragments;
 
 import android.os.Bundle;
-import android.provider.Settings;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.easystock.R;
 import com.example.easystock.controllers.viewModel.UserViewModel;
 import com.example.easystock.databinding.FragmentNewUserBinding;
 import com.example.easystock.models.User;
-import com.example.easystock.utils.Constants;
 
 public class CrudUserFragment extends Fragment {
 

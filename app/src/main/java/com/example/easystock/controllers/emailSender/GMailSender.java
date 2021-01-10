@@ -12,6 +12,9 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class GMailSender extends javax.mail.Authenticator {
+    /**
+     * Hay 3 jar que se instalaron como librerias en una carpeta del proyecto.
+     * **/
     private String mailhost = "smtp.gmail.com";
     private String user;
     private String password;

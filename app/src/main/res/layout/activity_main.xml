@@ -44,7 +44,6 @@
         android:layout_height="20dp"
         android:paddingStart="5dp"
         android:paddingEnd="5dp"
-        android:src="@drawable/test"
         app:layout_constraintBottom_toBottomOf="@id/topView"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />

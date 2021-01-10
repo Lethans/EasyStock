@@ -6,6 +6,8 @@
     <color name="secondary">#fcca57</color>
     <color name="secondary_second">#e69023</color>
     <color name="gray">#C8C8C8</color>
+    <color name="gray_background">#EBECF0</color>
+    <color name="gray_light">#DCDCDC</color>
     <color name="gray_acent">#757575</color>
     <color name="green_confirm">#1abc9c</color>
     <color name="password_box">#f6f6f6</color>

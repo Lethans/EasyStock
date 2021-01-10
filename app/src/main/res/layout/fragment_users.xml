@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
 
         <import type="com.example.easystock.models.User" />
+
         <import type="java.util.List" />
 
         <variable
             name="users"
-            type="List&lt;User>"/>
+            type="List&lt;User>" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/gray_background">
 
 
         <androidx.recyclerview.widget.RecyclerView
