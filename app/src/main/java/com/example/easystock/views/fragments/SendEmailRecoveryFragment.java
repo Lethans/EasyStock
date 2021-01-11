@@ -61,17 +61,12 @@ public class SendEmailRecoveryFragment extends DialogFragment {
 
         mBinding.btnSendRecoveryNumber.setOnClickListener(v -> {
             String email = mBinding.userEmail.getText().toString().trim();
-
             if (isEmailValid(email)) {
                 mUserViewModel.getExistingUserEmail(email, new GetExistingUserEmailListener() {
                     @Override
                     public void onValidEmail(User user) {
                         Random random = new Random();
                         @SuppressLint("DefaultLocale") String recoveryNumber = String.format("%04d", random.nextInt(10000));
-                        //user.setRecoveryPasswordNumber(recoveryNumber);
-                        //mUserViewModel.updateUser(user);
-                        //UserRepository userRepository = new UserRepository(getActivity());
-                        //userRepository.updateUser(user);
                         sendEmail(email, recoveryNumber);
                         Intent intent = new Intent(getContext(), RecoveryPasswordActivity.class);
                         intent.putExtra(RecoveryPasswordActivity.RECOVERY_NUMBER, recoveryNumber);
@@ -82,7 +77,7 @@ public class SendEmailRecoveryFragment extends DialogFragment {
 
                     @Override
                     public void onInvalidEmail() {
-                        Toast.makeText(getContext(), "Correo inexistente", Toast.LENGTH_SHORT).show();
+                        mBinding.recoveryEmailTextInputLayout.setError("Verifique la dirección ingresada");
                     }
                 });
             }

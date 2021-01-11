@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -49,6 +50,7 @@ public class RecoveryPasswordActivity extends AppCompatActivity {
         mBinding.setLifecycleOwner(this);
         mUserViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         mBinding.setIsRecoveryCorrect(false);
+        mBinding.setIsCodeError(false);
 
         recoveryCode = getIntent().getExtras().getString(RECOVERY_NUMBER);
         recoveryPasswordUser = (User) getIntent().getExtras().getSerializable(RECOVERY_USER);
@@ -62,7 +64,7 @@ public class RecoveryPasswordActivity extends AppCompatActivity {
 
         String[] splitEmail = recoveryPasswordUser.getEmail().split("[@]");
         if (splitEmail[0].length() >= 4)
-            mBinding.setUserEmail(splitEmail[0].substring(0, 4) + "******" + "@" + splitEmail[1]);
+            mBinding.setUserEmail(splitEmail[0].substring(0, 3) + "******" + "@" + splitEmail[1]);
         else
             mBinding.setUserEmail(splitEmail[0].substring(0, 2) + "******" + "@" + splitEmail[1]);
 
@@ -147,14 +149,25 @@ public class RecoveryPasswordActivity extends AppCompatActivity {
         public void afterTextChanged(Editable s) {
             String code = mBinding.recoveryFirstDigit.getText().toString() + mBinding.recoverySecondDigit.getText().toString() + mBinding.recoveryThirdDigit.getText().toString() + s.toString();
             if (!s.toString().isEmpty()) {
-                if (TextUtils.equals(recoveryCode, code))
-                    mBinding.setIsRecoveryCorrect(true);
-                else
+                if (TextUtils.equals(recoveryCode, code)) {
+
+                    mBinding.lockAnimation.setVisibility(View.VISIBLE);
+                    mBinding.lockAnimation.setAnimation("unlock.json");
+                    mBinding.lockAnimation.playAnimation();
+
+                    new Handler().postDelayed(() -> {
+                        mBinding.lockAnimation.setVisibility(View.GONE);
+                        mBinding.setIsRecoveryCorrect(true);
+                    }, 5000);
+
+
+                } else
                     setPasswordBoxBackground(R.drawable.recovery_code_error);
             } else
                 setPasswordBoxBackground(R.drawable.custom_recovery_box);
         }
     };
+
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private void setPasswordBoxBackground(int customDrawableReference) {
@@ -162,6 +175,7 @@ public class RecoveryPasswordActivity extends AppCompatActivity {
         mBinding.recoverySecondDigit.setBackground(getResources().getDrawable(customDrawableReference));
         mBinding.recoveryThirdDigit.setBackground(getResources().getDrawable(customDrawableReference));
         mBinding.recoveryFourthDigit.setBackground(getResources().getDrawable(customDrawableReference));
+        mBinding.setIsCodeError(customDrawableReference == R.drawable.recovery_code_error);
     }
 
 

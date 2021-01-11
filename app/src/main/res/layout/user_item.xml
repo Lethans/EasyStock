@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -12,32 +13,35 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="130dp"
+        android:layout_height="220dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:orientation="horizontal">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="116dp"
+            android:layout_height="206dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginLeft="2dp"
             android:layout_marginEnd="7dp"
             android:layout_marginRight="7dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginLeft="4dp"
             app:cardBackgroundColor="@{user.role.equals(`9`) ? @color/primary : @color/secondary}"
             app:cardCornerRadius="@dimen/radius_card_users"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-<!--        <androidx.cardview.widget.CardView
-            android:layout_width="40dp"
-            android:layout_height="116dp"
-            android:layout_marginStart="7dp"
-            android:layout_marginLeft="7dp"
-            app:cardBackgroundColor="@{user.role.equals(`9`) ? @color/primary : @color/secondary}"
-            app:cardCornerRadius="@dimen/radius_card_users"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />-->
+        <!--        <androidx.cardview.widget.CardView
+                    android:layout_width="40dp"
+                    android:layout_height="116dp"
+                    android:layout_marginStart="7dp"
+                    android:layout_marginLeft="7dp"
+                    app:cardBackgroundColor="@{user.role.equals(`9`) ? @color/primary : @color/secondary}"
+                    app:cardCornerRadius="@dimen/radius_card_users"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />-->
 
 
         <androidx.cardview.widget.CardView
@@ -53,24 +57,17 @@
                 android:layout_height="match_parent">
 
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guidelineVertical"
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.4" />
-
-                <androidx.constraintlayout.widget.Guideline
+                <!--<androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guidelineHorizontal"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.3" />
+                    app:layout_constraintGuide_percent="0.25" />-->
 
                 <TextView
                     android:id="@+id/user_username"
                     android:layout_width="0dp"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:gravity="center_horizontal"
                     android:text="@{user.username}"
@@ -78,69 +75,120 @@
                     android:textAllCaps="true"
                     android:textSize="22sp"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/guidelineHorizontal"
+                    app:layout_constraintBottom_toTopOf="@+id/textView16"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/user_email"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:text="@{user.email}"
-                    android:textAlignment="textStart"
-                    android:textSize="18sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="@+id/guidelineVertical"
-                    app:layout_constraintTop_toBottomOf="@+id/user_phone" />
-
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/leftMarginGuideline"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.05" />
 
                 <TextView
-                    android:id="@+id/user_phone"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:text="@{user.phone}"
-                    android:textAlignment="textStart"
-                    android:textSize="18sp"
-                    app:layout_constraintBottom_toTopOf="@+id/user_email"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="@+id/guidelineVertical"
+                    android:id="@+id/textView16"
+                    android:layout_width="86dp"
+                    android:layout_height="30dp"
+                    android:text="Nombre: "
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/textView17"
+                    app:layout_constraintStart_toStartOf="@+id/leftMarginGuideline"
                     app:layout_constraintTop_toBottomOf="@+id/user_username" />
-
 
                 <TextView
                     android:id="@+id/user_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
                     android:gravity="center_horizontal"
                     android:text="@{user.name}"
                     android:textAlignment="center"
                     android:textSize="20sp"
-                    app:layout_constraintBottom_toTopOf="@+id/user_lastname"
-                    app:layout_constraintEnd_toStartOf="@+id/guidelineVertical"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/user_username"
-                    app:layout_constraintVertical_chainStyle="packed" />
+                    app:layout_constraintBottom_toBottomOf="@+id/textView16"
+                    app:layout_constraintStart_toEndOf="@+id/textView18"
+                    app:layout_constraintTop_toTopOf="@+id/textView16" />
+
+                <TextView
+                    android:id="@+id/textView17"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Apellido: "
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/textView18"
+                    app:layout_constraintStart_toStartOf="@+id/leftMarginGuideline"
+                    app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
 
                 <TextView
                     android:id="@+id/user_lastname"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
                     android:gravity="center_horizontal"
                     android:text="@{user.lastName}"
                     android:textAlignment="center"
                     android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView17"
+                    app:layout_constraintStart_toEndOf="@+id/textView18"
+                    app:layout_constraintTop_toTopOf="@+id/textView17" />
+
+                <TextView
+                    android:id="@+id/textView18"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:text="Teléfono: "
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/textView19"
+                    app:layout_constraintStart_toStartOf="@+id/leftMarginGuideline"
+                    app:layout_constraintTop_toBottomOf="@+id/textView17" />
+
+                <TextView
+                    android:id="@+id/user_phone"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:gravity="start"
+                    android:text="@{user.phone}"
+                    android:textAlignment="textStart"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView18"
+                    app:layout_constraintStart_toEndOf="@+id/textView18"
+                    app:layout_constraintTop_toTopOf="@+id/textView18" />
+
+                <TextView
+                    android:id="@+id/textView19"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email: "
+                    android:textSize="20sp"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/user_name"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="@+id/user_name"
-                    app:layout_constraintTop_toBottomOf="@+id/user_name" />
+                    app:layout_constraintStart_toStartOf="@+id/leftMarginGuideline"
+                    app:layout_constraintTop_toBottomOf="@+id/textView18" />
+
+                <TextView
+                    android:id="@+id/user_email"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:gravity="start"
+                    android:text="@{user.email}"
+                    android:textAlignment="textStart"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView19"
+                    app:layout_constraintStart_toEndOf="@+id/textView18"
+                    app:layout_constraintTop_toTopOf="@+id/textView19" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
