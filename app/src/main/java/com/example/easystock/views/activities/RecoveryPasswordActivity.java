@@ -51,6 +51,7 @@ public class RecoveryPasswordActivity extends AppCompatActivity {
         mUserViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         mBinding.setIsRecoveryCorrect(false);
         mBinding.setIsCodeError(false);
+        mBinding.setShowSuccessFields(false);
 
         recoveryCode = getIntent().getExtras().getString(RECOVERY_NUMBER);
         recoveryPasswordUser = (User) getIntent().getExtras().getSerializable(RECOVERY_USER);
@@ -155,6 +156,7 @@ public class RecoveryPasswordActivity extends AppCompatActivity {
                     mBinding.lockAnimation.setAnimation("unlock.json");
                     mBinding.lockAnimation.playAnimation();
 
+                    mBinding.setShowSuccessFields(true);
                     new Handler().postDelayed(() -> {
                         mBinding.lockAnimation.setVisibility(View.GONE);
                         mBinding.setIsRecoveryCorrect(true);

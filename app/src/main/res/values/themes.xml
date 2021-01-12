@@ -1,9 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.EasyStock" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Theme.EasyStock" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#fcca57</item>
-        <item name="colorPrimaryVariant">#20303f</item>
+        <item name="colorPrimary">@color/primary_second</item>
+        <item name="colorPrimaryVariant">@color/primary</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
