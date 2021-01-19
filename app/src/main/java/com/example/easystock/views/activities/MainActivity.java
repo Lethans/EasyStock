@@ -25,9 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private CardView btnThird;
     private CardView btnFour;
     private CardView btnFifth;
-    private String role;
     private UserViewModel mUserViewModel;
-    private User mUser;
     private ConstraintLayout constraint;
 
 
@@ -39,18 +37,11 @@ public class MainActivity extends AppCompatActivity {
 
         constraint = findViewById(R.id.constraintMenu);
 
-        Intent intent = getIntent();
-        role = intent.getStringExtra("ROLE");
         init();
 
-        TextView text = findViewById(R.id.textUser);
-        mUserViewModel.getUserLogged().observe(this, user -> {
-            text.setText(user.getName());
-            mUser = user;
-        });
 
         //Fixme snackbar para implementar en delet de productos o usuarios
-        text.setOnClickListener(v -> {
+/*        text.setOnClickListener(v -> {
             Snackbar snackbar = Snackbar
                     .make(constraint, "Message is deleted", Snackbar.LENGTH_LONG)
                     .setAction("UNDO", new View.OnClickListener() {
@@ -62,28 +53,21 @@ public class MainActivity extends AppCompatActivity {
                     });
 
             snackbar.show();
-        });
+        });*/
 
 
         btnUser.setOnClickListener(v -> {
-            if (TextUtils.equals(role, Constants.ROLE_ADMIN)) {
                 Intent intent1 = new Intent(MainActivity.this, UserActivity.class);
                 intent1.putExtra(UserActivity.USERS, "ALL_USERS");
                 startActivity(intent1);
-            } else {
-                Toast.makeText(this, "Vendedor no", Toast.LENGTH_SHORT).show();
-            }
 
 
         });
 
         btnTwo.setOnClickListener(v -> {
-            if (TextUtils.equals(role, Constants.ROLE_ADMIN)) {
                 Intent intent1 = new Intent(MainActivity.this, StockActivity.class);
                 startActivity(intent1);
-            } else {
-                Toast.makeText(MainActivity.this, "Función habilitada para administradores", Toast.LENGTH_SHORT).show();
-            }
+
         });
 
         btnThird.setOnClickListener(v -> {
@@ -94,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         btnFour.setOnClickListener(v -> {
             Intent intent1 = new Intent(MainActivity.this, UserActivity.class);
             intent1.putExtra(UserActivity.USER_PROFILE, "USER_PROFILE");
-            intent1.putExtra(UserActivity.USER_TO_UPDATE, mUser);
+            //intent1.putExtra(UserActivity.USER_TO_UPDATE, mUser);
             startActivity(intent1);
         });
 

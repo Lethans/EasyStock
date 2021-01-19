@@ -19,9 +19,6 @@ public interface UserDao {
     @Query("SELECT * FROM user")
     LiveData<List<User>> getAllUsers();
 
-    @Query("SELECT * FROM user where isLogged = 1")
-    LiveData<User> getUserLogged();
-
 /*    @Query("SELECT * FROM user WHERE androidIdFingerprint = 'YES' LIMIT 1")
     LiveData<User> getUserFingerPrint();*/
 
@@ -31,15 +28,13 @@ public interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertListUsers(List<User> userList);
 
-
-
     /*@Query("UPDATE user SET fingerprint = 'NO' WHERE id NOT IN (SELECT id FROM user WHERE id = :id)")
     void setUserFinger(int id);*/
 
     @Query("SELECT * FROM user WHERE email=:email")
     User getExistingUserEmail(String email);
 
-    @Query("SELECT * FROM user WHERE androidIdFingerprint=:androidId ")
+    @Query("SELECT * FROM user WHERE androidIdFingerprint=:androidId limit 1 ")
     User getUserFingerprint(String androidId);
 
     @Query("SELECT * FROM user WHERE username=:username AND password=:password ")
@@ -47,16 +42,6 @@ public interface UserDao {
 
     @Query("SELECT COUNT(*) FROM user")
     int getUsersCount();
-
-    @Query("UPDATE user SET isLogged = 0 WHERE id NOT IN (SELECT id FROM user WHERE id = :id)")
-    void setUserLogged(int id);
-
-    @Transaction
-    default void updateUsersLogged(User user) {
-        updateUser(user);
-        setUserLogged(user.getId());
-        //setUserFinger(userLoggedId);
-    }
 
     @Update
     void updateUser(User... user);

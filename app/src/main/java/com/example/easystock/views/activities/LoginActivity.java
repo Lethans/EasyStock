@@ -1,14 +1,15 @@
 package com.example.easystock.views.activities;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.biometrics.BiometricPrompt;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Toast;
 
@@ -19,14 +20,13 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.easystock.R;
+import com.example.easystock.controllers.SharedController;
 import com.example.easystock.controllers.viewModel.UserViewModel;
 import com.example.easystock.databinding.ActivityLoginBinding;
 import com.example.easystock.listeners.GetUserListener;
 import com.example.easystock.listeners.GetUsersCountListener;
 import com.example.easystock.models.User;
-import com.example.easystock.controllers.emailSender.GMailSender;
 import com.example.easystock.views.fragments.SendEmailRecoveryFragment;
-import com.google.firebase.auth.FirebaseAuth;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -42,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     private String androidId = "";
     public static final int BIOMETRIC_SUCCESS = 0;
     private ActivityLoginBinding mBinding;
+    private SharedController sharedController;
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
@@ -50,12 +51,14 @@ public class LoginActivity extends AppCompatActivity {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         mBinding.setLifecycleOwner(this);
 
+        sharedController = new SharedController(this);
         mUserViewModel = new ViewModelProvider(LoginActivity.this).get(UserViewModel.class);
         try {
             androidId = Settings.Secure.getString(LoginActivity.this.getContentResolver(), Settings.Secure.ANDROID_ID);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         mUserViewModel.getUsersCount(new GetUsersCountListener() {
             @Override
             public void onEmptyUsers() {
@@ -159,8 +162,6 @@ public class LoginActivity extends AppCompatActivity {
                 mUserViewModel.getUserFingerprint(androidId, new GetUserListener() {
                     @Override
                     public void onGetUser(User user) {
-                        user.setLogged(true);
-                        mUserViewModel.updateUsersLogged(user);
                         login(user);
                     }
 
@@ -190,10 +191,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onGetUser(User user) {
                 user.setAndroidIdFingerprint(androidId);
-                user.setLogged(true);
-                mUserViewModel.updateUsersLogged(user);
+                mUserViewModel.updateUser(user);
                 login(user);
-                //mUserViewModel.updateUser(user);
             }
 
             @Override
@@ -205,12 +204,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login(User user) {
+        sharedController.setCurrentUserId(user.getId());
+        sharedController.setCurrentUserName(user.getUsername());
+        sharedController.setCurrentUserRole(user.getRole());
         mBinding.passwordEdit.setText("");
-        //mUser.setFingerprint(mBinding.fingerPrintCheck.isChecked() ? "YES" : "NO");
-        //mUser.setLogged(true);
-        //mUserViewModel.updateUsersLogged(mUser);
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        intent.putExtra("ROLE", user.getRole());
         startActivity(intent);
     }
 
@@ -218,7 +216,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private CancellationSignal getCancellationSignal() {
         cancellationSignal = new CancellationSignal();
-        cancellationSignal.setOnCancelListener(() -> Toast.makeText(LoginActivity.this, "5", Toast.LENGTH_SHORT).show());
         return cancellationSignal;
     }
 

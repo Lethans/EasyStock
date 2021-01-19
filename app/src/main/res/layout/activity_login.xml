@@ -171,9 +171,9 @@
 
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/ic_baseline_fingerprint_24"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                app:srcCompat="@drawable/ic_baseline_fingerprint_24"
                 app:layout_constraintBottom_toBottomOf="@+id/fingerPrintBtn"
                 app:layout_constraintEnd_toEndOf="@+id/fingerPrintBtn"
                 app:layout_constraintStart_toStartOf="@+id/fingerPrintBtn"

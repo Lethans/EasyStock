@@ -33,9 +33,6 @@ public class UserViewModel extends AndroidViewModel {
         return mAllUsers;
     }
 
-    public LiveData<User> getUserLogged() {
-        return mUserRepository.getUserLogged();
-    }
 
     /*public LiveData<User> getUserFingerPrint() {
         return mUserRepository.getUserFingerPrint();
@@ -53,9 +50,6 @@ public class UserViewModel extends AndroidViewModel {
         mUserRepository.updateUser(user);
     }
 
-    public void updateUsersLogged(User user) {
-        mUserRepository.updateUsersLogged(user);
-    }
 
     public void getLoginUser(String username, String password, GetUserListener listener) {
         mUserRepository.getLoginUser(username, password, listener);

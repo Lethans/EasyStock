@@ -19,7 +19,6 @@ public class User implements Serializable {
     private String email;
     private String phone;
     private String role;
-    private boolean isLogged;
     private boolean sync;
     private String androidIdFingerprint;
     private boolean isShowMenu;
@@ -34,7 +33,6 @@ public class User implements Serializable {
         this.email = email;
         this.phone = phone;
         this.role = role;
-        this.isLogged = false;
         this.androidIdFingerprint = "";
         this.sync = false;
         this.isShowMenu = false;
@@ -49,14 +47,12 @@ public class User implements Serializable {
         this.email = email;
         this.phone = phone;
         this.role = role;
-        this.isLogged = false;
         this.androidIdFingerprint = "";
         this.sync = false;
         this.isShowMenu = false;
     }
 
     public User() {
-        this.isLogged = false;
         this.androidIdFingerprint = "";
         this.sync = false;
         this.isShowMenu = false;
@@ -108,14 +104,6 @@ public class User implements Serializable {
 
     public void setRole(String role) {
         this.role = role;
-    }
-
-    public boolean isLogged() {
-        return isLogged;
-    }
-
-    public void setLogged(boolean logged) {
-        isLogged = logged;
     }
 
     public boolean isSync() {

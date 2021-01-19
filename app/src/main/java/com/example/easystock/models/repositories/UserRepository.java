@@ -36,9 +36,6 @@ public class UserRepository {
         return mAllUsers;
     }
 
-    public LiveData<User> getUserLogged() {
-        return mUserDao.getUserLogged();
-    }
 
     /*public LiveData<User> getUserFingerPrint() {
         return mUserDao.getUserFingerPrint();
@@ -60,9 +57,6 @@ public class UserRepository {
         new deleteUserAsyncTask(mUserDao).execute(user);
     }
 
-    public void updateUsersLogged(User user) {
-        new UpdateUsersLoggedAsyncTask(mUserDao, user).execute();
-    }
 
     public void getLoginUser(String username, String password, GetUserListener listener) {
         new LoginUserAsyncTask(mUserDao, username, password, listener).execute();
@@ -140,22 +134,6 @@ public class UserRepository {
         }
     }
 
-    private static class UpdateUsersLoggedAsyncTask extends AsyncTask<User, Void, Void> {
-
-        private UserDao mAsyncTaskDao;
-        private User mUser;
-
-        public UpdateUsersLoggedAsyncTask(UserDao dao, User user) {
-            mAsyncTaskDao = dao;
-            mUser = user;
-        }
-
-        @Override
-        protected Void doInBackground(User... voids) {
-            mAsyncTaskDao.updateUsersLogged(mUser);
-            return null;
-        }
-    }
 
     private static class GetExistingUserEmail extends AsyncTask<Void, Void, User> {
 
