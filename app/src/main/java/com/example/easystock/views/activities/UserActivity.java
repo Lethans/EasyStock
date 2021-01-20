@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.example.easystock.R;
@@ -42,7 +43,8 @@ public class UserActivity extends AppCompatActivity implements UsersFragment.Not
         mUserViewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
         mBinding.setIsNewUser(true);
-        Intent intent = getIntent();
+
+        /*Intent intent = getIntent();
         Bundle bundle = new Bundle();
         Fragment fragment = null;
         String tag = null;
@@ -57,7 +59,7 @@ public class UserActivity extends AppCompatActivity implements UsersFragment.Not
             bundle.putSerializable(UserProfileFragment.USER, user);
             mBinding.setIsNewUser(false);
         }
-        loadFragment(fragment, bundle, tag);
+        loadFragment(fragment, bundle, tag);*/
 
         mBinding.bottomNavigationUsers.show(1, true);
         mBinding.bottomNavigationUsers.add(new MeowBottomNavigation.Model(1, R.drawable.ic_baseline_groups_24));
@@ -65,14 +67,20 @@ public class UserActivity extends AppCompatActivity implements UsersFragment.Not
         mBinding.bottomNavigationUsers.add(new MeowBottomNavigation.Model(3, R.drawable.ic_baseline_person_white));
 
 
+
         mBinding.bottomNavigationUsers.setOnClickMenuListener(model -> {
             //aca las acciones que pasa con los cloicks
             if (model.getId() == 1)
-                Toast.makeText(UserActivity.this, "1", Toast.LENGTH_SHORT).show();
-            else if (model.getId() == 2)
                 Toast.makeText(UserActivity.this, "2", Toast.LENGTH_SHORT).show();
+            else if (model.getId() == 2)
+                Navigation.findNavController(mBinding.bottomNavigationUsers.getCellById(0).containerView).navigate(R.id.action_usersFragment_to_crudUserFragment);
             else
-                Toast.makeText(UserActivity.this, "3", Toast.LENGTH_SHORT).show();
+                /*selectedFragment = ItemoneFragment.newInstance();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.content,selectedFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+            return true;*/
             return null;
         });
 
@@ -96,7 +104,7 @@ public class UserActivity extends AppCompatActivity implements UsersFragment.Not
             fragment.setArguments(bundle);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right);
-        transaction.replace(R.id.userFrameContainer, fragment, fragmentTag);
+        transaction.replace(R.id.nav_users_container, fragment, fragmentTag);
         if (fragment instanceof CrudUserFragment)
             transaction.addToBackStack(getString(R.string.fragment_new_user));
         transaction.commit();
@@ -163,6 +171,6 @@ public class UserActivity extends AppCompatActivity implements UsersFragment.Not
 
     private Fragment loadedFragment() {
         FragmentManager mFragmentManager = getSupportFragmentManager();
-        return mFragmentManager.findFragmentById(R.id.userFrameContainer);
+        return mFragmentManager.findFragmentById(R.id.nav_users_container);
     }
 }
