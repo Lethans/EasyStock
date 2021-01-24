@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.easystock.R;
 import com.example.easystock.databinding.UserItemBinding;
 import com.example.easystock.databinding.UserItemMenuBinding;
-import com.example.easystock.interfaces.IUsersActivity;
 import com.example.easystock.models.User;
 import com.example.easystock.views.fragments.UsersFragment;
 
@@ -29,7 +28,6 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public UserAdapter(Context context, UsersFragment.NotificableUsersFragment listener) {
         this.mContext = context;
         this.mListener = listener;
-        notifyDataSetChanged();
     }
 
     @Override
@@ -128,10 +126,4 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    public interface NotificableRecyclerUsers {
-
-        void updateUser(User user);
-
-        void deleteUser(User user);
-    }
 }

@@ -6,28 +6,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
+import com.example.easystock.R;
 import com.example.easystock.controllers.viewModel.UserViewModel;
 import com.example.easystock.databinding.FragmentNewUserBinding;
 import com.example.easystock.models.User;
 
 public class CrudUserFragment extends Fragment {
 
-    public static final String USER = "USER";
-    public static final String OPERATION = "OPERATION";
 
     private UserViewModel userViewModel;
     private User mUser;
-
     private FragmentNewUserBinding mBinding;
 
-
-    public static CrudUserFragment newInstance() {
-        return new CrudUserFragment();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,44 +33,51 @@ public class CrudUserFragment extends Fragment {
 
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            mBinding.setIsUpdated(true);
-            mBinding.setUser((User) bundle.getSerializable(USER));
-            mBinding.setIsAdmin(((User) bundle.getSerializable(USER)).getRole().equals("9"));
-            if (mBinding.getUser().getId() == 1) {
-                mBinding.userRoleSwitch.setClickable(false);
-            }
-        } else {
-            mBinding.setIsUpdated(false);
+        if (getArguments() != null) {
+            mBinding.setUser((User) getArguments().getSerializable("USER"));
+            mUser = (User) getArguments().getSerializable("USER");
         }
 
-
-        mBinding.btnCancelUser.setOnClickListener(v -> {
-            FragmentManager fragmentManager = getParentFragmentManager();
-            fragmentManager.popBackStack();
-        });
-
         mBinding.btnAceptUser.setOnClickListener(v -> {
-            if (validation()) {
-                if (mBinding.getIsUpdated()) {
-                    mUser.setName(getValue(mBinding.nameEdit));
-                    mUser.setLastName(getValue(mBinding.userLastName));
-                    mUser.setPassword(getValue(mBinding.userPassword));
-                    mUser.setPhone(getValue(mBinding.userPhone));
-                    mUser.setRole(mBinding.userRoleSwitch.isChecked() ? "9" : "1");
-                    userViewModel.updateUser(mUser);
-                } else {
-                    mUser = new User(getValue(mBinding.userNameEdit), getValue(mBinding.nameEdit), getValue(mBinding.userLastName), getValue(mBinding.userPassword), getValue(mBinding.userEmail),
-                            getValue(mBinding.userPhone), mBinding.userRoleSwitch.isChecked() ? "9" : "1");
-                    userViewModel.insertUser(mUser);
-                }
+            if (!isAllDataValid()) {
+                return;
             }
+
+            if (mBinding.getUser() != null) {
+                mUser.setUsername(getValue(mBinding.userNameEdit));
+                mUser.setName(getValue(mBinding.nameEdit));
+                mUser.setLastName(getValue(mBinding.userLastName));
+                mUser.setPassword(getValue(mBinding.userPassword));
+                mUser.setEmail(getValue(mBinding.userEmail));
+                mUser.setPhone(getValue(mBinding.userPhone));
+                mUser.setRole(mBinding.userRoleSwitch.isChecked() ? "9" : "1");
+                userViewModel.updateUser(mUser);
+            } else {
+                mUser = new User(getValue(mBinding.userNameEdit), getValue(mBinding.nameEdit), getValue(mBinding.userLastName), getValue(mBinding.userPassword), getValue(mBinding.userEmail),
+                        getValue(mBinding.userPhone), mBinding.userRoleSwitch.isChecked() ? "9" : "1");
+                userViewModel.insertUser(mUser);
+            }
+            mUser = null;
+            mBinding.setUser(null);
+            clearAllFields();
+            //navController.navigate(R.id.action_to_users_fragment);
+
         });
         return mBinding.getRoot();
     }
 
-    private boolean validation() {
+    private void clearAllFields() {
+        mBinding.userNameEdit.setText("");
+        mBinding.nameEdit.setText("");
+        mBinding.userLastName.setText("");
+        mBinding.userPassword.setText("");
+        mBinding.userRepeatPassword.setText("");
+        mBinding.userEmail.setText("");
+        mBinding.userPhone.setText("");
+        mBinding.userRoleSwitch.setChecked(false);
+    }
+
+    private boolean isAllDataValid() {
 
         String username = getValue(mBinding.userNameEdit);
         String password = getValue(mBinding.userPassword);
@@ -119,6 +123,8 @@ public class CrudUserFragment extends Fragment {
     }
 
     private String getValue(EditText editText) {
+        if (editText.toString().isEmpty())
+            return "";
         return editText.getText().toString().trim();
     }
 

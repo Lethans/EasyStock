@@ -9,8 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,17 +28,8 @@ public class UsersFragment extends Fragment {
 
     private UserViewModel mUserViewModel;
     private UserAdapter mAdapter;
-    //private RecyclerView mRecycler;
     private NotificableUsersFragment mListener;
-
     private FragmentUsersBinding mBinding;
-
-    public UsersFragment() {
-    }
-
-    public static UsersFragment newInstance() {
-        return new UsersFragment();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,7 +46,7 @@ public class UsersFragment extends Fragment {
 
     private void setRecyclerView() {
         mBinding.usersRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        mAdapter = new UserAdapter(getContext(), mListener);
+        mAdapter = new UserAdapter(getActivity(), mListener);
         mBinding.usersRecycler.setAdapter(mAdapter);
     }
 
@@ -95,7 +89,6 @@ public class UsersFragment extends Fragment {
     }
 
     public interface NotificableUsersFragment {
-
         void updateUser(User user);
 
         void deleteUser(User user);

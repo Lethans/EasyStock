@@ -1,10 +1,8 @@
 package com.example.easystock.views.activities;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.hardware.biometrics.BiometricPrompt;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,7 +18,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.easystock.R;
-import com.example.easystock.controllers.SharedController;
+import com.example.easystock.controllers.UserPreferences;
 import com.example.easystock.controllers.viewModel.UserViewModel;
 import com.example.easystock.databinding.ActivityLoginBinding;
 import com.example.easystock.listeners.GetUserListener;
@@ -42,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     private String androidId = "";
     public static final int BIOMETRIC_SUCCESS = 0;
     private ActivityLoginBinding mBinding;
-    private SharedController sharedController;
+    //private UserPreferences userPreferences;
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
@@ -51,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         mBinding.setLifecycleOwner(this);
 
-        sharedController = new SharedController(this);
+        //userPreferences = new UserPreferences(this);
         mUserViewModel = new ViewModelProvider(LoginActivity.this).get(UserViewModel.class);
         try {
             androidId = Settings.Secure.getString(LoginActivity.this.getContentResolver(), Settings.Secure.ANDROID_ID);
@@ -204,9 +202,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login(User user) {
-        sharedController.setCurrentUserId(user.getId());
-        sharedController.setCurrentUserName(user.getUsername());
-        sharedController.setCurrentUserRole(user.getRole());
+        UserPreferences.saveUser(this, user);
         mBinding.passwordEdit.setText("");
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);

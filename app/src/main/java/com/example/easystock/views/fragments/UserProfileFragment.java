@@ -1,14 +1,18 @@
 package com.example.easystock.views.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.example.easystock.controllers.viewModel.UserViewModel;
 import com.example.easystock.databinding.FragmentUserProfileBinding;
@@ -16,6 +20,7 @@ import com.example.easystock.models.User;
 
 public class UserProfileFragment extends Fragment {
 
+    private static final String TAG = "UserProfileFragment";
     public static final String USER = "USER";
     private UserViewModel mUserViewModel;
     private FragmentUserProfileBinding mBinding;
@@ -30,10 +35,25 @@ public class UserProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /*UserProfileFragmentArgs args = UserProfileFragmentArgs.fromBundle(getArguments());
+        String message = args.getTest();
+            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();*/
+
         /*if (getArguments() != null) {
             //mUser = (User) getArguments().getSerializable(USER);
             mBinding.setUser((User) getArguments().getSerializable(USER));
         }*/
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (getArguments() != null) {
+/*            UserProfileFragmentArgs args = UserProfileFragmentArgs.fromBundle(getArguments());
+            String messege = args.getCId();
+            Log.i(TAG, "onViewCreated: " + messege);*/
+        }
     }
 
     @Override
@@ -43,10 +63,13 @@ public class UserProfileFragment extends Fragment {
         //View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
         mUserViewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
-        if (getArguments() != null) {
+
+/*        if (getArguments() != null) {
             //mUser = (User) getArguments().getSerializable(USER);
+            //String url = PrivacyPolicyFragmentArgs.fromBundle(getArguments()).getPrivacyPolicyLink();
             mBinding.setUser((User) getArguments().getSerializable(USER));
-        }
+        }*/
+
 
         mBinding.btnVisibilityUpdatePassword.setOnClickListener(v -> mBinding.setIsUpdatePassword(true));
 
@@ -90,4 +113,10 @@ public class UserProfileFragment extends Fragment {
         return editText.getText().toString().trim();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+
+    }
 }

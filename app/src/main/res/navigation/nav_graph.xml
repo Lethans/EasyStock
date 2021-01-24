@@ -1,0 +1,65 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/navigation_users">
+
+
+    <!--    <action
+            android:id="@+id/action_Fragment1_to_Fragment2"
+            app:destination="@id/Fragment2_id"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/your_MainGraph_id"
+            app:popUpToInclusive="true" />-->
+
+    <action
+        android:id="@+id/action_to_users_fragment"
+        app:destination="@id/navigation_users" />
+    <action
+        android:id="@+id/action_to_crud_fragment"
+        app:destination="@id/navigation_add"
+        app:launchSingleTop="true"
+        app:popUpTo="@id/nav_graph"
+        app:popUpToInclusive="true" />
+    <action
+        android:id="@+id/action_to_profile_fragment"
+        app:destination="@id/navigation_profile"
+        app:launchSingleTop="true"
+        app:popUpTo="@id/nav_graph"
+        app:popUpToInclusive="true" />
+
+
+    <fragment
+        android:id="@+id/navigation_users"
+        android:name="com.example.easystock.views.fragments.UsersFragment"
+        android:label="navigation_users"
+        tools:layout="@layout/fragment_users" >
+
+        <action
+            android:id="@+id/action_users_to_crud_fragment"
+            app:destination="@id/navigation_add" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_add"
+        android:name="com.example.easystock.views.fragments.CrudUserFragment"
+        android:label="navigation_add"
+        tools:layout="@layout/fragment_new_user">
+        <argument
+            android:name="user"
+            app:argType="com.example.easystock.models.User"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.example.easystock.views.fragments.UserProfileFragment"
+        android:label="navigation_profile"
+        tools:layout="@layout/fragment_user_profile">
+        <argument
+            android:name="user"
+            app:argType="com.example.easystock.models.User" />
+    </fragment>
+
+
+</navigation>

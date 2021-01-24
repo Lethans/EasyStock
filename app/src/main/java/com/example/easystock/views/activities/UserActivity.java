@@ -1,28 +1,26 @@
 package com.example.easystock.views.activities;
 
-import android.content.Intent;
+import android.app.AlertDialog;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.example.easystock.R;
 import com.example.easystock.controllers.viewModel.UserViewModel;
 import com.example.easystock.databinding.ActivityUsersBinding;
 import com.example.easystock.models.User;
-import com.example.easystock.views.fragments.CrudUserFragment;
-import com.example.easystock.views.fragments.UserProfileFragment;
 import com.example.easystock.views.fragments.UsersFragment;
+import com.example.easystock.views.fragments.UsersFragmentDirections;
 
 import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
+import kotlin.jvm.functions.Function2;
+import np.com.susanthapa.curved_bottom_navigation.CbnMenuItem;
 
 public class UserActivity extends AppCompatActivity implements UsersFragment.NotificableUsersFragment {
 
@@ -32,6 +30,8 @@ public class UserActivity extends AppCompatActivity implements UsersFragment.Not
 
     private ActivityUsersBinding mBinding;
     private UserViewModel mUserViewModel;
+    private NavController navController;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,119 +39,71 @@ public class UserActivity extends AppCompatActivity implements UsersFragment.Not
 
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_users);
         mBinding.setLifecycleOwner(this);
-
         mUserViewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
-        mBinding.setIsNewUser(true);
+        navController = Navigation.findNavController(this, R.id.nav_users_container);
 
-        /*Intent intent = getIntent();
-        Bundle bundle = new Bundle();
-        Fragment fragment = null;
-        String tag = null;
-        if (intent.getExtras().getString(USERS) != null) {
-            fragment = UsersFragment.newInstance();
-            tag = getString(R.string.fragment_users);
-            mBinding.setIsNewUser(true);
-        } else if (intent.getExtras().getString(USER_PROFILE) != null) {
-            fragment = UserProfileFragment.newInstance();
-            tag = getString(R.string.fragment_user_profile);
-            User user = (User) intent.getExtras().getSerializable(USER_TO_UPDATE);
-            bundle.putSerializable(UserProfileFragment.USER, user);
-            mBinding.setIsNewUser(false);
-        }
-        loadFragment(fragment, bundle, tag);*/
+        CbnMenuItem cbn1 = new CbnMenuItem(R.drawable.ic_baseline_groups_24, R.drawable.avd_group, 0);
+        CbnMenuItem cbn2 = new CbnMenuItem(R.drawable.ic_baseline_add_24, R.drawable.avd_plus, 1);
+        CbnMenuItem cbn3 = new CbnMenuItem(R.drawable.ic_baseline_person_white, R.drawable.avd_profile, 2);
 
-        mBinding.bottomNavigationUsers.show(1, true);
-        mBinding.bottomNavigationUsers.add(new MeowBottomNavigation.Model(1, R.drawable.ic_baseline_groups_24));
-        mBinding.bottomNavigationUsers.add(new MeowBottomNavigation.Model(2, R.drawable.ic_baseline_group_add_24));
-        mBinding.bottomNavigationUsers.add(new MeowBottomNavigation.Model(3, R.drawable.ic_baseline_person_white));
+        CbnMenuItem[] menuItems = new CbnMenuItem[]{cbn1, cbn2, cbn3};
+/*                new CbnMenuItem(R.drawable.ic_baseline_groups_24, R.drawable.avd_group, 0),
+                new CbnMenuItem(R.drawable.ic_baseline_add_24, R.drawable.avd_plus, 1),
+                new CbnMenuItem(R.drawable.ic_baseline_person_white, R.drawable.avd_profile, 2)};*/
 
+        mBinding.navView.setMenuItems(menuItems, 0);
+        setActiveBottomMenuItem(0);
 
-
-        mBinding.bottomNavigationUsers.setOnClickMenuListener(model -> {
-            //aca las acciones que pasa con los cloicks
-            if (model.getId() == 1)
-                Toast.makeText(UserActivity.this, "2", Toast.LENGTH_SHORT).show();
-            else if (model.getId() == 2)
-                Navigation.findNavController(mBinding.bottomNavigationUsers.getCellById(0).containerView).navigate(R.id.action_usersFragment_to_crudUserFragment);
-            else
-                /*selectedFragment = ItemoneFragment.newInstance();
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.content,selectedFragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
-            return true;*/
-            return null;
+        mBinding.navView.setOnMenuItemClickListener(new Function2<CbnMenuItem, Integer, Unit>() {
+            @Override
+            public Unit invoke(CbnMenuItem cbnMenuItem, Integer integer) {
+                switch (integer) {
+                    case 0:
+                        navController.navigate(R.id.action_to_users_fragment);
+                        break;
+                    case 1:
+                        navController.navigate(R.id.action_to_crud_fragment);
+                        break;
+                    case 2:
+                        navController.navigate(R.id.action_to_profile_fragment);
+                        break;
+                }
+                return Unit.INSTANCE;
+            }
         });
 
-        mBinding.bottomNavigationUsers.setOnShowListener(model -> {
-            //Aca va el menu qe abre por doefecto
-            return null;
-        });
-
-            /*mBinding.addUserBtn.setOnClickListener(v -> {
-                if (!(loadedFragment() instanceof CrudUserFragment)) {
-                    CrudUserFragment crudFragment = CrudUserFragment.newInstance();
-                    loadFragment(crudFragment, null, getString(R.string.fragment_new_user));
-                }
-            });*/
-
+        /*app:cbn_selectedColor	Tint for the icon in selected state	#000000
+        app:cbn_unSelectedColor	Tint for the icon in unselected state	#8F8F8F
+        app:cbn_animDuration	Duration in millisecond for the curve animation	300L
+        app:cbn_fabElevation	Elevation for the Floating Action Button	4dp
+        app:cbn_elevation	Elevaton for the Curved Bottom Navigation View	6dp
+        app:cbn_fabBg	Background color of the Floating Action Button	#FFFFFF
+        app:cbn_bg	Background color of the Curved Bottom Navigation	#FFFFFF*/
 
     }
 
-    private void loadFragment(Fragment fragment, Bundle bundle, String fragmentTag) {
-        if (bundle != null)
-            fragment.setArguments(bundle);
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right);
-        transaction.replace(R.id.nav_users_container, fragment, fragmentTag);
-        if (fragment instanceof CrudUserFragment)
-            transaction.addToBackStack(getString(R.string.fragment_new_user));
-        transaction.commit();
+    private void setActiveBottomMenuItem(int index) {
+        mBinding.navView.onMenuItemClick(index);
     }
 
-    public void clearStack() {
-        //Here we are clearing back stack fragment entries
-        int backStackEntry = getSupportFragmentManager().getBackStackEntryCount();
-        if (backStackEntry > 0) {
-            for (int i = 0; i < backStackEntry; i++) {
-                getSupportFragmentManager().popBackStackImmediate();
-            }
-        }
-        //Here we are removing all the fragment that are shown here
-        if (getSupportFragmentManager().getFragments() != null && getSupportFragmentManager().getFragments().size() > 0) {
-            for (int i = 0; i < getSupportFragmentManager().getFragments().size(); i++) {
-                Fragment mFragment = getSupportFragmentManager().getFragments().get(i);
-                if (mFragment != null) {
-                    getSupportFragmentManager().beginTransaction().remove(mFragment).commit();
-                }
-            }
-        }
-    }
-
-
-    @Override
-    public void onBackPressed() {
-/*        if (loadedFragment() instanceof UsersFragment || loadedFragment() instanceof UserProfileFragment) {
-            mBinding.setIsNewUser(true);
-            clearStack();
-        }*/
-        super.onBackPressed();
-    }
 
     @Override
     public void updateUser(User user) {
-/*        CrudUserFragment crudFragment = CrudUserFragment.newInstance();
+        //Se hizo con una interfaz porque llamando al navigation con argumentos desde el mismo fragment
+        //no activaba el curved bottom navigation, entonces funcionaba pero sin hacer el cambio de item
+        setActiveBottomMenuItem(1);
         Bundle bundle = new Bundle();
-        bundle.putSerializable(CrudUserFragment.USER, user);
-        bundle.putString(CrudUserFragment.OPERATION, "UPDATE");
-        mBinding.setIsNewUser(false);
-        loadFragment(crudFragment, bundle, getString(R.string.fragment_new_user));*/
+        bundle.putSerializable("USER", user);
+        navController.navigate(R.id.action_to_crud_fragment, bundle);
+
+        //UsersFragmentDirections.ActionUsersToCrudFragment action = UsersFragmentDirections.actionUsersToCrudFragment();
+        //action.setUser(user);
+        //navController.navigate(action);
     }
 
     @Override
     public void deleteUser(User user) {
-        /*mBinding.setIsNewUser(true);
         if (!TextUtils.equals(String.valueOf(user.getId()), "1")) {
             new AlertDialog.Builder(UserActivity.this)
                     .setIcon(R.drawable.ic_baseline_arrow_right_24)
@@ -166,11 +118,6 @@ public class UserActivity extends AppCompatActivity implements UsersFragment.Not
                     .show();
         } else {
             Toast.makeText(UserActivity.this, "No se puede eliminar el usuario", Toast.LENGTH_SHORT).show();
-        }*/
-    }
-
-    private Fragment loadedFragment() {
-        FragmentManager mFragmentManager = getSupportFragmentManager();
-        return mFragmentManager.findFragmentById(R.id.nav_users_container);
+        }
     }
 }
