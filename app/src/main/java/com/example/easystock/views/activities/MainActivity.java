@@ -10,35 +10,34 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.easystock.R;
 import com.example.easystock.controllers.viewModel.UserViewModel;
+import com.example.easystock.databinding.ActivityMainBinding;
 import com.example.easystock.models.User;
 import com.example.easystock.utils.Constants;
 import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
 
-    private CardView btnUser;
-    private CardView btnTwo;
-    private CardView btnThird;
-    private CardView btnFour;
-    private CardView btnFifth;
+
     private UserViewModel mUserViewModel;
-    private ConstraintLayout constraint;
+    private ActivityMainBinding mBinding;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        //setContentView(R.layout.activity_main);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        mBinding.setLifecycleOwner(this);
+
         mUserViewModel = new ViewModelProvider(MainActivity.this).get(UserViewModel.class);
 
-        constraint = findViewById(R.id.constraintMenu);
 
-        init();
-
+        mBinding.usersMainBtn.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, UserActivity.class)));
 
         //Fixme snackbar para implementar en delet de productos o usuarios
 /*        text.setOnClickListener(v -> {
@@ -55,44 +54,5 @@ public class MainActivity extends AppCompatActivity {
             snackbar.show();
         });*/
 
-
-        btnUser.setOnClickListener(v -> {
-                Intent intent1 = new Intent(MainActivity.this, UserActivity.class);
-                intent1.putExtra(UserActivity.USERS, "ALL_USERS");
-                startActivity(intent1);
-
-
-        });
-
-        btnTwo.setOnClickListener(v -> {
-                Intent intent1 = new Intent(MainActivity.this, StockActivity.class);
-                startActivity(intent1);
-
-        });
-
-        btnThird.setOnClickListener(v -> {
-            Intent intent1 = new Intent(MainActivity.this, ShowStock.class);
-            startActivity(intent1);
-        });
-
-        btnFour.setOnClickListener(v -> {
-            Intent intent1 = new Intent(MainActivity.this, UserActivity.class);
-            intent1.putExtra(UserActivity.USER_PROFILE, "USER_PROFILE");
-            //intent1.putExtra(UserActivity.USER_TO_UPDATE, mUser);
-            startActivity(intent1);
-        });
-
-        btnFifth.setOnClickListener(v -> {
-            Intent intent1 = new Intent(MainActivity.this, CheckoutActivity.class);
-            startActivity(intent1);
-        });
-    }
-
-    private void init() {
-        btnUser = findViewById(R.id.firstIcon);
-        btnTwo = findViewById(R.id.secondIcon);
-        btnThird = findViewById(R.id.thirdIcon);
-        btnFour = findViewById(R.id.fourIcon);
-        btnFifth = findViewById(R.id.fifthIcon);
     }
 }
